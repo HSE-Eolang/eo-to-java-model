@@ -1,9 +1,6 @@
-package eo.org.eolang.core.data;
+package eolang.core.data;
 
-import eo.org.eolang.core.EOObject;
-import eo.org.eolang.core.data.EOData;
-
-import java.lang.reflect.Field;
+import eolang.core.EOObject;
 
 /**
  * Объект хранящий данные, используется для работы с Data Objects из EO.

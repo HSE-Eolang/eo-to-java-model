@@ -1,11 +1,9 @@
-package eo.org.eolang.txt;
+package eolang.txt;
 
-import eo.org.eolang.core.data.EOData;
-import eo.org.eolang.core.EOObject;
+import eolang.core.data.EOData;
+import eolang.core.EOObject;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * Объект осуществляющий создание форматированых строк.

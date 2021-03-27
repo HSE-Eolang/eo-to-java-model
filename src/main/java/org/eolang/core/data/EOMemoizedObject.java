@@ -1,7 +1,6 @@
-package eo.org.eolang.core.data;
+package org.eolang.core.data;
 
-import eo.org.eolang.core.EOObject;
-import eo.org.eolang.core.data.EOData;
+import org.eolang.core.EOObject;
 
 /**
  * Базовый класс для объектов представляющие арифметические, логические и другие операции над данными.

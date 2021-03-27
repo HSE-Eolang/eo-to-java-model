@@ -1,4 +1,4 @@
-package eo.org.eolang.core.data;
+package eolang.core.data;
 
 /**
  * Объект-заглушка, представляющий пустые данные

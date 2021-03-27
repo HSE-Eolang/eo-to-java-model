@@ -1,7 +1,7 @@
-package eo.org.eolang.io;
+package eolang.io;
 
-import eo.org.eolang.core.data.EOData;
-import eo.org.eolang.core.EOObject;
+import eolang.core.data.EOData;
+import eolang.core.EOObject;
 
 /**
  * Объект при датаризации выводит в стандартный поток вывода результат датаризации свободного атрибута out.

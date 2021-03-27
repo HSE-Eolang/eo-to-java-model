@@ -1,9 +1,8 @@
-package eo.org.eolang.calc;
+package eolang.calc;
 
-import eo.org.eolang.core.data.EOData;
-import eo.org.eolang.core.data.EODataObject;
-import eo.org.eolang.core.EOObject;
-import eo.org.eolang.core.data.EOExpressionObject;
+import eolang.core.data.EOData;
+import eolang.core.EOObject;
+import eolang.core.data.EOExpressionObject;
 
 /**
  * Объект, при датаризации которого выполняется арифметическое сложение результатов датаризации свободных атрибутов.

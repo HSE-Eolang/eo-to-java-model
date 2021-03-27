@@ -1,7 +1,7 @@
-package eo.org.eolang.calc;
+package eolang.calc;
 
-import eo.org.eolang.core.data.EOData;
-import eo.org.eolang.core.EOObject;
+import eolang.core.data.EOData;
+import eolang.core.EOObject;
 
 /**
  * Объект представляющий собой аналог управляющей конструкции if в других языках.
