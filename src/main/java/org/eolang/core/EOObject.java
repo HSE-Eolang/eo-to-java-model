@@ -1,7 +1,7 @@
-package eolang.core;
+package org.eolang.core;
 
-import eolang.core.data.EOData;
-import eolang.core.data.EODataObject;
+import org.eolang.core.data.EOData;
+import org.eolang.core.data.EODataObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

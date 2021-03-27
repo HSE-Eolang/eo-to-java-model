@@ -1,10 +1,8 @@
 package eo.test.shapes;
 
-import eo.org.eolang.calc.EOadd;
-import eo.org.eolang.calc.EOmul;
-import eo.org.eolang.core.EOObject;
-import eo.org.eolang.core.data.EOData;
-import eo.org.eolang.core.data.EODataObject;
+import org.eolang.calc.EOadd;
+import org.eolang.core.EOObject;
+import org.eolang.core.data.EOData;
 
 /**
  * Периметр треугольника.

@@ -1,9 +1,8 @@
-import eo.org.eolang.core.EOObject;
-import eo.org.eolang.core.data.EODataObject;
-import eo.org.eolang.io.EOstdout;
-import eo.org.eolang.txt.EOsprintf;
+import org.eolang.core.EOObject;
+import org.eolang.core.data.EODataObject;
+import org.eolang.io.EOstdout;
+import org.eolang.txt.EOsprintf;
 import eo.test.EOFactorial;
-import eo.test.EOfibonacci;
 
 public class MainFactorial {
     public static void main(String[] args) {

@@ -1,6 +1,6 @@
-package eolang.core.data;
+package org.eolang.core.data;
 
-import eolang.core.EOObject;
+import org.eolang.core.EOObject;
 
 /**
  * Объект хранящий данные, используется для работы с Data Objects из EO.

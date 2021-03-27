@@ -1,13 +1,13 @@
-package eolang.calc;
+package org.eolang.calc;
 
-import eolang.core.data.EOData;
-import eolang.core.EOObject;
-import eolang.core.data.EOExpressionObject;
+import org.eolang.core.data.EOData;
+import org.eolang.core.EOObject;
+import org.eolang.core.data.EOMemoizedObject;
 /**
  * Объект, при датаризации которого выполняется арифметическое вычитание результатов датаризации свободных атрибутов.
  * val1 - val2
  */
-public class EOsub extends EOExpressionObject {
+public class EOsub extends EOMemoizedObject {
     private EOObject val1;
     private EOObject val2;
     //TODO add float support

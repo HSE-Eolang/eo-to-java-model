@@ -1,9 +1,9 @@
 package eo.test;
 
-import eo.org.eolang.calc.*;
-import eo.org.eolang.core.EOObject;
-import eo.org.eolang.core.data.EOData;
-import eo.org.eolang.core.data.EODataObject;
+import org.eolang.calc.*;
+import org.eolang.core.EOObject;
+import org.eolang.core.data.EOData;
+import org.eolang.core.data.EODataObject;
 
 public class EOFactorial extends EOObject {
     private EOObject n;
