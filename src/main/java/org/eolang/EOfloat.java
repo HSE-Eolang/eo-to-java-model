@@ -21,7 +21,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Adds the (@code rightAddend) free attribute to this float
+     * Adds the {@code rightAddend} free attribute to this float
      * @param rightAddend a number to be added to this float
      * @return An object representing the sum of this float and the {@code rightAddend} free attribute
      */
@@ -30,7 +30,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Subtracts the (@code subtrahend) free attribute from this float
+     * Subtracts the {@code subtrahend} free attribute from this float
      * @param subtrahend a number to be subtracted from this float
      * @return An object representing the difference between of this float and the {@code subtrahend} free attribute
      */
@@ -39,7 +39,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Divides this float by the (@code divisor) free attribute
+     * Divides this float by the {@code divisor} free attribute
      * @param divisor a number which divides this float
      * @return An object representing the quotient of this float divided by the {@code divisor} free attribute
      */
@@ -49,7 +49,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Multiplies this float by the (@code multiplier) free attribute
+     * Multiplies this float by the {@code multiplier} free attribute
      * @param multiplier a number by which this float is to be multiplied
      * @return An object representing the product of this float and the {@code multiplier} free attribute
      */
@@ -58,7 +58,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Checks if this float is equal to the (@code rightFloat) free attribute
+     * Checks if this float is equal to the {@code rightFloat} free attribute
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
@@ -67,7 +67,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Checks if this float is not equal to the (@code rightFloat) free attribute
+     * Checks if this float is not equal to the {@code rightFloat} free attribute
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
@@ -76,7 +76,7 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Checks if this float is less than the (@code rightFloat) free attribute
+     * Checks if this float is less than the {@code rightFloat} free attribute
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
@@ -85,16 +85,16 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Checks if this float is less than or equal to the (@code rightFloat) free attribute
+     * Checks if this float is less than or equal to the {@code rightFloat} free attribute
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOleq(EOObject multiplier){
-        return new EObool(this.value <= multiplier._getData().toFloat());
+    public EObool EOleq(EOObject rightFloat){
+        return new EObool(this.value <= rightFloat._getData().toFloat());
     }
 
     /***
-     * Checks if this float is greater than the (@code rightFloat) free attribute
+     * Checks if this float is greater than the {@code rightFloat} free attribute
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
@@ -103,12 +103,12 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Checks if this float is greater than or equal to the (@code rightFloat) free attribute
+     * Checks if this float is greater than or equal to the {@code rightFloat} free attribute
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOgeq(EOObject multiplier){
-        return new EObool(this.value >= multiplier._getData().toFloat());
+    public EObool EOgeq(EOObject rightFloat){
+        return new EObool(this.value >= rightFloat._getData().toFloat());
     }
 
     /***
@@ -136,9 +136,9 @@ public class EOfloat extends EOObject {
     }
 
     /***
-     * Multiplies this float by the number of times specified by the (@code exponent) free attribute
+     * Multiplies this float by the number of times specified by the {@code exponent} free attribute
      * @param exponent a number by which this float is to be multiplied the number of times
-     * @return An object representing the  ({@code exponent} free attribute)th power of this float
+     * @return An object representing the  {@code exponent} free attribute)th power of this float
      */
     public EOfloat EOpow(EOObject exponent){
         return new EOfloat(Math.pow(this.value, exponent._getData().toInt()));

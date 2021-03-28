@@ -5,8 +5,12 @@ import org.eolang.core.EOObjectArray;
 import org.eolang.core.data.EOData;
 import org.eolang.core.data.EODataObject;
 
+/***
+ * Represents an array
+ * @version %I%, %G%
+ */
 public class EOarray extends EOObject {
-    private EOObjectArray array;
+    private final EOObjectArray array;
 
     public EOarray(EOObjectArray array){
         this.array = array;
@@ -34,18 +38,18 @@ public class EOarray extends EOObject {
     }
 
     /***
-     * Get the object at (@code position) free attribute of the array
+     * Get the object at {@code position} free attribute of the array
      * @param position an index of the array to fetch from
-     * @return An object representing the value at the (@code position) free attribute index of the array
+     * @return An object representing the value at the {@code position} free attribute index of the array
      */
     public EOData get(EOObject position){
         return new EOData(array.get_array()[position._getData().toInt().intValue()]);
     }
 
     /***
-     * Appends the object of the free attribute (@code eoObject) to the array
+     * Appends the object of the free attribute {@code eoObject} to the array
      * @param eoObject An object to append to this array
-     * @return An object representing the a new array with the appended object of the free attribute (@code eoObject)
+     * @return An object representing the a new array with the appended object of the free attribute {@code eoObject}
      */
     public EOObjectArray append(EOObject eoObject){
         EOObject[] newArray = new EOObject[this.array.get_array().length + 1];
@@ -57,12 +61,13 @@ public class EOarray extends EOObject {
     }
 
     /***
-     * To Do
-     * @param accumulator
-     * @param reducefunction
+     * TO DO
+     * Performs the reduction operation of its base array object
+     * @param accumulator a partial result
+     * @param reducefunction represents the reduction function
      * @return
      */
-    public EOObject reduce(){
+    public EOObject reduce(EOObject accumulator, EOObject reducefunction){
 //        TO DO
         return new EODataObject(0);
     }

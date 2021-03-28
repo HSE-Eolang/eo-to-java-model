@@ -3,6 +3,10 @@ package org.eolang;
 import org.eolang.core.EOObject;
 import org.eolang.core.data.EOData;
 
+/***
+ * Represents a character type
+ * @version %I%, %G%
+ */
 public class EOchar extends EOObject {
     private char character;
 
