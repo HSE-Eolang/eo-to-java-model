@@ -21,7 +21,7 @@ public class EObool extends EOObject {
      * Used for value substitution based on the condition of this baseBool
      * @param trueObject an object to be substituted with if this baseBool object is true.
      * @param falseObject an object to be substituted with if this baseBool object is false.
-     * @return
+     * @return An object being either the trueObject or the falseObject
      */
     public EOObject EOif(EOObject trueObject, EOObject falseObject){
         EOObject result;
