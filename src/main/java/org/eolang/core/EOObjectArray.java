@@ -23,4 +23,8 @@ public class EOObjectArray extends EOObject{
                 .skip(_array.length - 1).findFirst()
                 .orElse(new EONoData());
     }
+
+    public EOObject[] get_array() {
+        return _array;
+    }
 }
