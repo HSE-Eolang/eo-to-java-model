@@ -9,9 +9,11 @@ public class MainFactorial {
         int arg = Integer.parseInt(args[0]);
         EOObject stdout = new EOstdout(
                 new EOsprintf(
-                        new EODataObject("Factorial of %d  is %d\n"),
-                        new EODataObject(arg),
-                        new EOFactorial(new EODataObject(arg))
+                        new EOsprintf(
+                                new EODataObject("Factorial of %d  is %d\n"),
+                                new EODataObject(arg),
+                                new EOFactorial(new EODataObject(arg))
+                        )
                 )
         );
         stdout._getData();
