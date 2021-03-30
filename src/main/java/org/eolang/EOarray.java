@@ -25,7 +25,7 @@ public class EOarray extends EOObject {
      * Determines if the base array is empty
      * @return A boolean object, true if empty and false if not empty
      */
-    public EObool isEmpty(){
+    public EObool EOisEmpty(){
         return new EObool(array.get_array().length == 0);
     }
 
@@ -33,7 +33,7 @@ public class EOarray extends EOObject {
      * Gets the length of the array
      * @return An object representing the length of the array
      */
-    public EOint length(){
+    public EOint EOlength(){
         return new EOint(array.get_array().length);
     }
 
@@ -42,8 +42,8 @@ public class EOarray extends EOObject {
      * @param position an index of the array to fetch from
      * @return An object representing the value at the {@code position} free attribute index of the array
      */
-    public EOData get(EOObject position){
-        return new EOData(array.get_array()[position._getData().toInt().intValue()]);
+    public EOObject EOget(EOObject position){
+        return array.get_array()[position._getData().toInt().intValue()];
     }
 
     /***
