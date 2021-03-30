@@ -51,7 +51,7 @@ public class EOarray extends EOObject {
      * @param eoObject An object to append to this array
      * @return An object representing the a new array with the appended object of the free attribute {@code eoObject}
      */
-    public EOObjectArray append(EOObject eoObject){
+    public EOObjectArray EOappend(EOObject eoObject){
         EOObject[] newArray = new EOObject[this.array.get_array().length + 1];
         for (int i=0; i<this.array.get_array().length; i++) {
             newArray[i] = this.array.get_array()[i];
@@ -67,7 +67,7 @@ public class EOarray extends EOObject {
      * @param reducefunction represents the reduction function
      * @return
      */
-    public EOObject reduce(EOObject accumulator, EOObject reducefunction){
+    public EOObject EOreduce(EOObject accumulator, EOObject reducefunction){
 //        TO DO
         return new EODataObject(0);
     }
@@ -89,7 +89,7 @@ public class EOarray extends EOObject {
      * @param falsy
      * @return
      */
-    public EOObject map(EObool falsy){
+    public EOObject EOmap(EObool falsy){
 //        TO DO
         return new EODataObject(-1);
     }
@@ -99,7 +99,7 @@ public class EOarray extends EOObject {
      * @param falsy
      * @return
      */
-    public EOObject mapi(EObool falsy){
+    public EOObject EOmapi(EObool falsy){
 //        To DO
         return new EODataObject(-1);
     }

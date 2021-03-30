@@ -31,7 +31,7 @@ public class EOstring extends EOObject {
      * Makes an integer type of this string
      * @return An object representing the integer value of this string
      */
-    public EOint toInt(){
+    public EOint EOtoInt(){
         return new EOint(Long.parseLong(stringValue));
     }
 
