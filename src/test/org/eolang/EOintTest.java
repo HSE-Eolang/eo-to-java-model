@@ -197,7 +197,7 @@ class EOintTest {
      */
     @Test
     void EOabs() {
-        final EOint left = new EOint(12L);
+        final EOint left = new EOint(-12L);
         final EOint absolute = left.EOabs();
 
         MatcherAssert.assertThat(
