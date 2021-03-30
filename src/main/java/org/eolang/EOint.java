@@ -25,7 +25,7 @@ public class EOint extends EOObject {
      * @param rightAddend a number to be added to this integer
      * @return An object representing a sum of this integer and the {@code rightAddend} free attribute
      */
-    public EOint add(EOObject rightAddend) {
+    public EOint EOadd(EOObject rightAddend) {
         return new EOint(this.value + rightAddend._getData().toInt());
     }
 
@@ -34,16 +34,16 @@ public class EOint extends EOObject {
      * @param subtrahend a number to be subtracted from this integer
      * @return An object representing a difference of this integer and the {@code subtrahend} free attribute
      */
-    public EOint sub(EOObject subtrahend) {
+    public EOint EOsub(EOObject subtrahend) {
         return new EOint(this.value - subtrahend._getData().toInt());
     }
 
-    public EOint div(EOObject divisor) {
+    public EOint EOdiv(EOObject divisor) {
         // TODO add check if divisor == 0 then return exception object
         return new EOint(Math.floorDiv(this.value, divisor._getData().toInt()));
     }
 
-    public EOint mul(EOObject rightFactor) {
+    public EOint EOmul(EOObject rightFactor) {
         return new EOint(this.value * rightFactor._getData().toInt());
     }
     
@@ -140,7 +140,7 @@ public class EOint extends EOObject {
      * @return An object representing the remainder of the division by  ({@code divisor} free attribute)
      */
     public EOint EOmod(EOObject divisor){
-        return new EOint((long) Math.pow(this.value, divisor._getData().toInt()));
+        return new EOint((long) Math.floorMod(this.value, divisor._getData().toInt()));
     }
 
 }
