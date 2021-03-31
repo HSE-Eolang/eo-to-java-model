@@ -1,0 +1,32 @@
++package sandbox
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
+
+[a b] > rectangle
+  a.mul b > area
+  [] > perimeter
+    2 > a
+    mul. > @
+      a
+      add.
+        ^.a
+        ^.b
+    [] > halfPerimeterAbstr
+      [] > @
+        (^.^.^.a).add (^.^.^.b) > @
+    (^.a).add (^.b) > halfPerimeterApplic
+
+[args...] > app
+  rectangle > rec1
+    10
+    []
+      15 > @
+  stdout > @
+    sprintf
+      "side a:%d\nside b:%d\narea: %d\nperimeter: %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n"
+      rec1.a
+      rec1.b
+      rec1.area > ar
+      rec1.perimeter > per
+      rec1.perimeter.halfPerimeterAbstr
+      per.halfPerimeterApplic
