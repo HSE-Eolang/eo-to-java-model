@@ -28,6 +28,14 @@ public class EOapp extends EOObject {
     }
 
     /***
+     * Input variable-length attribute 'args'
+     * @return object bound to the input variable-length attribute 'args'
+     */
+    public EOObject EOargs() {
+        return this.args;
+    }
+
+    /***
      * Output attribute 'rec1'
      * @return object bound to the output attribute 'rec1'
      */
