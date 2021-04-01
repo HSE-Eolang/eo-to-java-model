@@ -12,13 +12,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test case for {@link EOint}
+ * Test cases for {@link EOint}
  *
  */
 class EOintTest {
 
     /***
      * Test for datization
+     * Checks if the data is returned
      */
     @Test
     @DisplayName("Test Dataization")
@@ -27,9 +28,10 @@ class EOintTest {
         assertEquals(left._getData().toInt(), 12L);
     }
 
-    /**
-     * Tests for addition
-     */
+    /***
+    * Test for {@code EOadd}
+    * checks if addition is successful
+    */
     @Test
     void add() {
         final EOint left = new EOint(12L);
@@ -45,9 +47,10 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for subtraction
-     */
+    /***
+    * Test for {@code EOsub}
+    * checks if subtraction is successful
+    */
     @Test
     void sub() {
         final EOint left = new EOint(12L);
@@ -59,9 +62,10 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for division
-     */
+    /***
+    * Test for {@code EOdiv}
+    * checks if division is successful
+    */
     @Test
     void div() {
         final EOint left = new EOint(12L);
@@ -73,9 +77,10 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for multiplication
-     */
+    /***
+    * Test for {@code EOmul}
+    * checks if multiplication is successful
+    */
     @Test
     void mul() {
         final EOint left = new EOint(12L);
@@ -87,29 +92,31 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for equals
-     */
+    /***
+    * Test for {@code EOeq}
+    * checks equality (==)
+    */
     @Test
     void EOeq() {
         final EOint left = new EOint(12L);
-        final EOint right = new EOint(8L);
-        final EObool eq = new EOint(left._getData().toInt()).EOeq(right);
+        final EOint right = new EOint(12L);
+        final EObool eq = new EObool(left.EOeq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 eq._getData().toBoolean(),
-                Matchers.equalTo(false)
+                Matchers.equalTo(true)
         );
     }
 
-    /**
-     * Tests for not equals
-     */
+    /***
+    * Test for {@code EOneq}
+    * checks equality (!=)
+    */
     @Test
     void EOneq() {
         final EOint left = new EOint(12L);
         final EOint right = new EOint(8L);
-        final EObool notEqualTo = new EOint(left._getData().toInt()).EOneq(right);
+        final EObool notEqualTo = new EObool(left.EOneq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 notEqualTo._getData().toBoolean(),
@@ -117,44 +124,47 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for less than
-     */
+    /***
+    * Test for {@code EOless}
+    * checks if the left side value is less than that of the right side
+    */
     @Test
     void EOless() {
         final EOint left = new EOint(12L);
-        final EOint right = new EOint(8L);
-        final EObool less = new EOint(left._getData().toInt()).EOless(right);
+        final EOint right = new EOint(18L);
+        final EObool less = new EObool(left.EOless(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 less._getData().toBoolean(),
-                Matchers.equalTo(false)
+                Matchers.equalTo(true)
         );
     }
 
-    /**
-     * Tests for less than or equals
-     */
+    /***
+    * Test for {@code EOless}
+    * checks if the left side value is less than or equal to that of the right side
+    */
     @Test
     void EOleq() {
         final EOint left = new EOint(12L);
-        final EOint right = new EOint(8L);
-        final EObool lessThanOrEqualTo = new EOint(left._getData().toInt()).EOleq(right);
+        final EOint right = new EOint(12L);
+        final EObool lessThanOrEqualTo = new EObool(left.EOleq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 lessThanOrEqualTo._getData().toBoolean(),
-                Matchers.equalTo(false)
+                Matchers.equalTo(true)
         );
     }
 
-    /**
-     * Tests for greater than
-     */
+    /***
+    * Test for {@code EOgreater}
+    * checks if the left side value is greater than that of the right side
+    */
     @Test
     void EOgreater() {
         final EOint left = new EOint(12L);
         final EOint right = new EOint(8L);
-        final EObool greater = new EOint(left._getData().toInt()).EOgreater(right);
+        final EObool greater = new EObool(left.EOgreater(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 greater._getData().toBoolean(),
@@ -162,14 +172,15 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for greater than or equals
-     */
+    /***
+    * Test for {@code EOgeq}
+    * checks if the left side value is greater than or equal to that of the right side
+    */
     @Test
     void EOgeq() {
         final EOint left = new EOint(12L);
         final EOint right = new EOint(8L);
-        final EObool greaterOrEqualTo = new EOint(left._getData().toInt()).EOgeq(right);
+        final EObool greaterOrEqualTo = new EObool(left.EOgeq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 greaterOrEqualTo._getData().toBoolean(),
@@ -177,13 +188,14 @@ class EOintTest {
         );
     }
 
-    /**
-     * Tests for negation
-     */
+    /***
+    * Test for {@code EOneg}
+    * checks if the base value gets negated
+    */
     @Test
     void EOneg() {
-        final EOint left = new EOint(12L);
-        final EOint neg = left.EOneg();
+        final EOint base = new EOint(12L);
+        final EOint neg = base.EOneg();
 
         MatcherAssert.assertThat(
                 neg._getData().toInt(),
@@ -192,13 +204,14 @@ class EOintTest {
 
     }
 
-    /**
-     * Tests for absolute number
-     */
+    /***
+    * Test for {@code EOabs}
+    * checks if the base value is returned as a non-negative number
+    */
     @Test
     void EOabs() {
-        final EOint left = new EOint(-12L);
-        final EOint absolute = left.EOabs();
+        final EOint base = new EOint(-12L);
+        final EOint absolute = base.EOabs();
 
         MatcherAssert.assertThat(
                 absolute._getData().toInt(),
@@ -207,12 +220,13 @@ class EOintTest {
     }
 
     /**
-     * Tests for all three possibilities of signum
-     * @param number an integer representing the number to apply {@code EOsignum()} to
+     * Tests for all three possibilities of {@code signum}
+     * checks if the correct sign value is returned
+     * @param number an integer representing the test value to apply {@code EOsignum} to
      */
-    @DisplayName("Test signum")
     @ParameterizedTest(name = "{0}")
     @ValueSource(ints = {-23, 0, 7})
+    @DisplayName("Test signum")
     void EOsignum(int number) {
         MatcherAssert.assertThat(
                 new EOint(
@@ -223,7 +237,8 @@ class EOintTest {
     }
 
     /***
-     * Test for power
+     * Test for {@EOpow}
+     * checks if a number raised to a power is correctly evaluated
      * @param exponent An integer representing the exponent
      */
     @ParameterizedTest(name = "{0}")
@@ -245,6 +260,7 @@ class EOintTest {
 
     /***
      * Tests Zero to the power Zero
+     * checks if a number raised to the power 0 returns 1
      */
     @Test
     void zeroToZeroPower() {
@@ -280,7 +296,8 @@ class EOintTest {
 //    }
 
     /***
-     * Tests for modulo
+     * Test for {@code EOmod}
+     * checks if the modulo of a number is the remainder after division
      */
     @Test
     void EOmod() {

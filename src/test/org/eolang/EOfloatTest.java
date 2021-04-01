@@ -10,10 +10,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test cases for {@link EOfloat}
+ *
+ */
 class EOfloatTest {
 
     /***
      * Test for datization
+     * Checks if the data is returned
      */
     @Test
     @DisplayName("Test Dataization")
@@ -22,6 +27,10 @@ class EOfloatTest {
         assertEquals(left._getData().toFloat(), 12);
     }
 
+    /***
+    * Test for {@code EOadd}
+    * checks if addition is successful
+    */
     @Test
     void EOadd() {
         final EOfloat left = new EOfloat(12.0);
@@ -32,6 +41,10 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOsub}
+    * checks if subtraction is successful
+    */
     @Test
     void EOsub() {
         final EOfloat left = new EOfloat(12.0);
@@ -42,6 +55,10 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOdiv}
+    * checks if division is successful
+    */
     @Test
     void EOdiv() {
         final EOfloat left = new EOfloat(12.0);
@@ -52,6 +69,10 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOmul}
+    * checks if multiplication is successful
+    */
     @Test
     void EOmul() {
         final EOfloat left = new EOfloat(12.0);
@@ -62,23 +83,31 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOeq}
+    * checks equality (==)
+    */
     @Test
     void EOeq() {
         final EOfloat left = new EOfloat(12.0);
-        final EOfloat right = new EOfloat(8.0);
-        final EObool eq = new EOfloat(left._getData().toFloat()).EOeq(right);
+        final EOfloat right = new EOfloat(12.0);
+        final EObool eq = new EObool(left.EOeq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 eq._getData().toBoolean(),
-                Matchers.equalTo(false)
+                Matchers.equalTo(true)
         );
     }
 
+    /***
+    * Test for {@code EOneq}
+    * checks equality (!=)
+    */
     @Test
     void EOneq() {
         final EOfloat left = new EOfloat(12.0);
         final EOfloat right = new EOfloat(8.0);
-        final EObool notEqual = new EOfloat(left._getData().toFloat()).EOneq(right);
+        final EObool notEqual = new EObool(left.EOneq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 notEqual._getData().toBoolean(),
@@ -86,35 +115,47 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOless}
+    * checks if the left side value is less than that of the right side
+    */
     @Test
     void EOless() {
-        final EOfloat left = new EOfloat(12.0);
+        final EOfloat left = new EOfloat(4.0);
         final EOfloat right = new EOfloat(8.0);
-        final EObool less = new EOfloat(left._getData().toFloat()).EOless(right);
+        final EObool less = new EObool(left.EOless(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 less._getData().toBoolean(),
-                Matchers.equalTo(false)
+                Matchers.equalTo(true)
         );
     }
 
+    /***
+    * Test for {@code EOleq}
+    * checks if the left side value is less than or equal to that of the right side
+    */
     @Test
     void EOleq() {
         final EOfloat left = new EOfloat(12.0);
-        final EOfloat right = new EOfloat(8.0);
-        final EObool lessThanOrEquals = new EOfloat(left._getData().toFloat()).EOleq(right);
+        final EOfloat right = new EOfloat(12.0);
+        final EObool lessThanOrEquals = new EObool(left.EOleq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 lessThanOrEquals._getData().toBoolean(),
-                Matchers.equalTo(false)
+                Matchers.equalTo(true)
         );
     }
 
+    /***
+    * Test for {@code EOgreater}
+    * checks if the left side value is greater than that of the right side
+    */
     @Test
     void EOgreater() {
         final EOfloat left = new EOfloat(12.0);
         final EOfloat right = new EOfloat(8.0);
-        final EObool greater = new EOfloat(left._getData().toFloat()).EOgreater(right);
+        final EObool greater = new EObool(left.EOgreater(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 greater._getData().toBoolean(),
@@ -122,11 +163,15 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOgreater}
+    * checks if the left side value is greater than or equal to that of the right side
+    */
     @Test
     void EOgeq() {
         final EOfloat left = new EOfloat(12.0);
-        final EOfloat right = new EOfloat(8.0);
-        final EObool greaterOrEquals = new EOfloat(left._getData().toFloat()).EOgeq(right);
+        final EOfloat right = new EOfloat(12.0);
+        final EObool greaterOrEquals = new EObool(left.EOgeq(right)._getData().toBoolean());
 
         MatcherAssert.assertThat(
                 greaterOrEquals._getData().toBoolean(),
@@ -134,10 +179,14 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOneg}
+    * checks if the base value gets negated
+    */
     @Test
     void EOneg() {
-        final EOfloat left = new EOfloat(12.0);
-        final EOfloat neg = left.EOneg();
+        final EOfloat base = new EOfloat(12.0);
+        final EOfloat neg = base.EOneg();
 
         MatcherAssert.assertThat(
                 neg._getData().toFloat(),
@@ -145,6 +194,10 @@ class EOfloatTest {
         );
     }
 
+    /***
+    * Test for {@code EOabs}
+    * checks if the base value is returned as a non-negative number
+    */
     @Test
     void EOabs() {
         final EOfloat left = new EOfloat(-12.0);
@@ -156,9 +209,14 @@ class EOfloatTest {
         );
     }
 
-    @DisplayName("Test signum")
+    /**
+     * Tests for all three possibilities of {@code signum}
+     * checks if the correct sign value is returned
+     * @param number an integer representing the test value to apply {@code EOsignum} to
+     */
     @ParameterizedTest(name = "{0}")
     @ValueSource(doubles = {-23.0, 0.0, 7.0})
+    @DisplayName("Test signum")
     void EOsignum(double number) {
         MatcherAssert.assertThat(
                 new EOfloat(
@@ -168,6 +226,11 @@ class EOfloatTest {
         );
     }
 
+    /***
+     * Test for {@EOpow}
+     * checks if a number raised to a power is correctly evaluated
+     * @param exponent An integer representing the exponent
+     */
     @ParameterizedTest(name = "{0}")
     @ValueSource(doubles = {0.0, 1.0, 2.0, 3.0})
     @DisplayName("Test powers")
