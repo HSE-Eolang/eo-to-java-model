@@ -7,6 +7,9 @@ import org.eolang.EOfloat;
 
 public class MainCramers {
     public static void main(String[] args){
+//        cramer's rule for solving 2 equations
+//        ax1 + ax2 = a;
+//        bx1 + bx2 = b
 
 //        Example 1
 //        equation 1
