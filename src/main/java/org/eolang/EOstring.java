@@ -41,6 +41,6 @@ public class EOstring extends EOObject {
      * @return An object representing the truth value of the comparison of this string with the {@code rightString} free attribute
      */
     public EObool EOeq(EOObject rightString){
-        return new EObool(stringValue.equals(rightString.toString()));
+        return new EObool(stringValue.equals(rightString._getData().toString()));
     }
 }
