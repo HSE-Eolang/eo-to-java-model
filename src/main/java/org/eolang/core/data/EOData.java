@@ -36,6 +36,16 @@ public class EOData {
         return "";
     }
 
+    /**
+     * @return a character value of the data, otherwise 0
+     */
+    public Character toChar(){
+        if(_data.getClass().equals(Character.class)) {
+            return _data.toString().charAt(0);
+        }
+        return '0';
+    }
+
     public Object toObject() {
         return _data;
     }
