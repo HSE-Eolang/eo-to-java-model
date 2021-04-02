@@ -9,25 +9,25 @@ import java.util.Arrays;
 
 
 /**
- * Базовый EO объект. На основе этого класса создаются классы для создания объектов пользователяю
+ * Basic EO object. Based on this class, classes are created for creating user objects.
  */
 public abstract class EOObject implements Cloneable{
     /**
-     * Ссылка на родетеля объекта
+     * Link to the parent of the object
      */
     protected EOObject _parent;
 
     /**
-     * Проверка может ли быть датаризован объект при создании для кеширования объекта датаризации.
-     * Вариант решения проблемы экспоненциального роста времени датаризации при рекурсии.
+     * Checking if an object can be datarized when creating a datarized object for caching.
+     * A variant of solving the problem of exponential growth of datarization time during recursion.
      * @return the boolean
      */
     public boolean _isCalculable(){return false;}
 
     /**
-     * Установка родителя объект.
+     * Setting the parent object.
      *
-     * @param _parent Объект родитель
+     * @param _parent The parent object
      * @return this
      */
     public EOObject _setParent(EOObject _parent){
@@ -37,9 +37,9 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Функция выполняющая датаризацию объекта
+     * Function that performs dateization of the object
      *
-     * @return Данные
+     * @return Data
      */
     public EOData _getData(){
         //_freeAttributes();
@@ -47,9 +47,9 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Создание копии объекта.
+     * Creation of a copy of an object.
      *
-     * @return копия объекта
+     * @return a copy of the object
      */
     public EOObject _clone() {
         /*try{
@@ -72,7 +72,7 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Присвоение атрибутам объекта значения null для последующего удаления атрибутов сборщиком мусора.
+     * Assigning the object's attributes to null for later removal of the attributes by the garbage collector.
      */
     /*public void _freeAttributes(){
         for (Field field : this.getClass().getDeclaredFields()) {
@@ -87,10 +87,10 @@ public abstract class EOObject implements Cloneable{
     }*/
 
     /**
-     * Копирование атрибута объекта по имени.
+     * Copying an attribute of an object by name.
      *
-     * @param name Имя объекта
-     * @return Атрибута объекта
+     * @param name Object name
+     * @return Object Attribute
      */
     public EOObject _getAttribute(String name) {
         EOObject res = new EODataObject();
@@ -124,11 +124,11 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Копирование атрибута объекта по имени с установкойй свободных аттрибутов
+     * Copying an attribute of an object by name with the installation of free attributes
      *
-     * @param name    Имя объекта
-     * @param freeAtt Свободные аттрибуты
-     * @return Атрибута объекта
+     * @param name Object name
+     * @Param freeAtt Available attributes
+     * @return Object Attribute
      */
     public EOObject _getAttribute(String name, EOObject... freeAtt) {
         EOObject res = new EODataObject();
