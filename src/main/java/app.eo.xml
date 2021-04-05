@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<program ms="270"
+<program ms="273"
          name="app.eo"
-         time="2021-04-03T04:39:25.993459Z"
+         time="2021-04-05T02:29:40.228370Z"
          version="0.1.25">
-   <listing>+package sandbox.io.gio
+   <listing>+package sandbox
       +alias stdout org.eolang.io.stdout
       +alias sprintf org.eolang.txt.sprintf
 
-      [] &gt; rectanglePlainAbst1
-
-      [c d...] &gt; rectanglePlainAbstr2
-
-      [] &gt; anotherAbstraction
-      random &gt; hello
-
-      [a b] &gt; rectangleAbstr
-      a.mul b &gt; areaApplic
-      [] &gt; perimeterAbstr
+      [a b] &gt; rectangle
+      a.mul b &gt; area
+      [z q h] &gt; perimeter
       2 &gt; a
       mul. &gt; @
       a
@@ -29,21 +22,19 @@
       (^.a).add (^.b) &gt; halfPerimeterApplic
 
       [args...] &gt; app
-      rectangleAbstr &gt; rec1Applic
+      rectangle &gt; rec1
       10
       []
       15 &gt; @
       stdout &gt; @
       sprintf
-      "%dside a:%d\nside b:%d\narea: %d\nperimeter: %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n"
-      []
-      1 &gt; @
-      rec1Applic.a
-      rec1Applic.b
-      rec1Applic.areaApplic
-      rec1Applic.perimeterAbstr
-      rec1Applic.perimeterAbstr.halfPerimeterAbstr
-      rec1Applic.perimeterAbstr.halfPerimeterApplic
+      "side a:%d\nside b:%d\narea: %d\nperimeter: %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n"
+      rec1.a
+      rec1.b
+      rec1.area &gt; ar
+      rec1.perimeter &gt; per
+      rec1.perimeter.halfPerimeterAbstr
+      per.halfPerimeterApplic
       &lt;EOF&gt;</listing>
    <errors/>
    <sheets>
@@ -79,8 +70,8 @@
    <metas>
       <meta line="1">
          <head>package</head>
-         <tail>sandbox.io.gio</tail>
-         <part>sandbox.io.gio</part>
+         <tail>sandbox</tail>
+         <part>sandbox</part>
       </meta>
       <meta line="2">
          <head>alias</head>
@@ -96,180 +87,174 @@
       </meta>
    </metas>
    <objects>
-      <o line="5"
-         name="rectanglePlainAbst1"
-         original-name="rectanglePlainAbst1">
-         <o line="5"/>
-      </o>
-      <o line="7"
-         name="rectanglePlainAbstr2"
-         original-name="rectanglePlainAbstr2">
-         <o line="7" name="c"/>
-         <o line="7" name="d" vararg=""/>
-      </o>
-      <o line="9"
-         name="anotherAbstraction"
-         original-name="anotherAbstraction">
-         <o base="org.eolang.random" line="10" name="hello"/>
-      </o>
-      <o line="12" name="rectangleAbstr" original-name="rectangleAbstr">
-         <o line="12" name="a"/>
-         <o line="12" name="b"/>
-         <o base=".mul" line="13" method="" name="areaApplic">
-            <o base="a" line="13" ref="12"/>
-            <o base="b" line="13" ref="12"/>
+      <o line="5" name="rectangle" original-name="rectangle">
+         <o line="5" name="a"/>
+         <o line="5" name="b"/>
+         <o base=".mul" line="6" method="" name="area">
+            <o base="a" line="6" ref="5"/>
+            <o base="b" line="6" ref="5"/>
          </o>
-         <o base="rectangleAbstr$perimeterAbstr"
-            cut="12"
-            line="14"
-            name="perimeterAbstr"
-            ref="14">
-            <o as="a" base="a" level="1" ref="12"/>
-            <o as="b" base="b" level="1" ref="12"/>
-            <o as="areaApplic" base="areaApplic" level="1" ref="13"/>
+         <o base="rectangle$perimeter"
+            cut="5"
+            line="7"
+            name="perimeter"
+            ref="7">
+            <o as="a" base="a" level="1" ref="5"/>
+            <o as="b" base="b" level="1" ref="5"/>
+            <o as="area" base="area" level="1" ref="6"/>
          </o>
       </o>
       <o ancestors="1"
-         line="14"
-         name="rectangleAbstr$perimeterAbstr"
-         original-name="perimeterAbstr"
-         parent="rectangleAbstr">
-         <o base="org.eolang.int" data="int" line="15" name="a">2</o>
-         <o base=".mul" line="16" name="@">
-            <o base="a" line="17" ref="15"/>
-            <o base=".add" line="18">
-               <o base=".a" line="19" method="">
-                  <o base="^" line="19"/>
+         line="7"
+         name="rectangle$perimeter"
+         original-name="perimeter"
+         parent="rectangle">
+         <o line="7" name="z"/>
+         <o line="7" name="q"/>
+         <o line="7" name="h"/>
+         <o base="org.eolang.int" data="int" line="8" name="a">2</o>
+         <o base=".mul" line="9" name="@">
+            <o base="a" line="10" ref="8"/>
+            <o base=".add" line="11">
+               <o base=".a" line="12" method="">
+                  <o base="^" line="12"/>
                </o>
-               <o base=".b" line="20" method="">
-                  <o base="^" line="20"/>
+               <o base=".b" line="13" method="">
+                  <o base="^" line="13"/>
                </o>
             </o>
          </o>
-         <o base="rectangleAbstr$perimeterAbstr$halfPerimeterAbstr"
-            cut="20"
-            line="21"
+         <o base="rectangle$perimeter$halfPerimeterAbstr"
+            cut="16"
+            line="14"
             name="halfPerimeterAbstr"
-            ref="21">
-            <o as="a" base="a" level="1" ref="15"/>
-            <o as="@" base="@" level="1" ref="16"/>
+            ref="14">
+            <o as="z" base="z" level="1" ref="7"/>
+            <o as="q" base="q" level="1" ref="7"/>
+            <o as="h" base="h" level="1" ref="7"/>
+            <o as="a" base="a" level="1" ref="8"/>
+            <o as="@" base="@" level="1" ref="9"/>
             <o as="halfPerimeterApplic"
                base="halfPerimeterApplic"
                level="1"
-               ref="24"/>
-            <o as="b" base="b" level="2" ref="14.12"/>
-            <o as="areaApplic" base="areaApplic" level="2" ref="14.13"/>
+               ref="17"/>
+            <o as="b" base="b" level="2" ref="7.5"/>
+            <o as="area" base="area" level="2" ref="7.6"/>
          </o>
-         <o base=".add" line="24" method="" name="halfPerimeterApplic">
-            <o base=".a" line="24" method="">
-               <o base="^" line="24"/>
+         <o base=".add" line="17" method="" name="halfPerimeterApplic">
+            <o base=".a" line="17" method="">
+               <o base="^" line="17"/>
             </o>
-            <o base=".b" line="24" method="">
-               <o base="^" line="24"/>
+            <o base=".b" line="17" method="">
+               <o base="^" line="17"/>
             </o>
          </o>
-         <o level="1" line="14.12" name="b"/>
-         <o level="1" line="14.13" name="areaApplic"/>
+         <o level="1" line="7.5" name="b"/>
+         <o level="1" line="7.6" name="area"/>
       </o>
       <o ancestors="2"
-         line="21"
-         name="rectangleAbstr$perimeterAbstr$halfPerimeterAbstr"
+         line="14"
+         name="rectangle$perimeter$halfPerimeterAbstr"
          original-name="halfPerimeterAbstr"
-         parent="rectangleAbstr">
-         <o base="rectangleAbstr$perimeterAbstr$halfPerimeterAbstr$@"
-            cut="20"
-            line="22"
+         parent="rectangle">
+         <o base="rectangle$perimeter$halfPerimeterAbstr$@"
+            cut="16"
+            line="15"
             name="@"
-            ref="22">
-            <o as="a" base="a" level="2" ref="21.15"/>
-            <o as="@" base="@" level="2" ref="22"/>
+            ref="15">
+            <o as="z" base="z" level="2" ref="14.7"/>
+            <o as="q" base="q" level="2" ref="14.7"/>
+            <o as="h" base="h" level="2" ref="14.7"/>
+            <o as="a" base="a" level="2" ref="14.8"/>
+            <o as="@" base="@" level="2" ref="15"/>
             <o as="halfPerimeterApplic"
                base="halfPerimeterApplic"
                level="2"
-               ref="21.24"/>
-            <o as="b" base="b" level="3" ref="21.12"/>
-            <o as="areaApplic" base="areaApplic" level="3" ref="21.13"/>
+               ref="14.17"/>
+            <o as="b" base="b" level="3" ref="14.5"/>
+            <o as="area" base="area" level="3" ref="14.6"/>
          </o>
-         <o level="1" line="21.15" name="a"/>
-         <o level="1" line="21.24" name="halfPerimeterApplic"/>
-         <o level="2" line="21.12" name="b"/>
-         <o level="2" line="21.13" name="areaApplic"/>
+         <o level="1" line="14.7" name="z"/>
+         <o level="1" line="14.7" name="q"/>
+         <o level="1" line="14.7" name="h"/>
+         <o level="1" line="14.8" name="a"/>
+         <o level="1" line="14.17" name="halfPerimeterApplic"/>
+         <o level="2" line="14.5" name="b"/>
+         <o level="2" line="14.6" name="area"/>
       </o>
       <o ancestors="3"
-         line="22"
-         name="rectangleAbstr$perimeterAbstr$halfPerimeterAbstr$@"
+         line="15"
+         name="rectangle$perimeter$halfPerimeterAbstr$@"
          original-name="@"
-         parent="rectangleAbstr">
-         <o base=".add" line="23" method="" name="@">
-            <o base=".a" line="23" method="">
-               <o base=".^" line="23" method="">
-                  <o base=".^" line="23" method="">
-                     <o base="^" line="23"/>
+         parent="rectangle">
+         <o base=".add" line="16" method="" name="@">
+            <o base=".a" line="16" method="">
+               <o base=".^" line="16" method="">
+                  <o base=".^" line="16" method="">
+                     <o base="^" line="16"/>
                   </o>
                </o>
             </o>
-            <o base=".b" line="23" method="">
-               <o base=".^" line="23" method="">
-                  <o base=".^" line="23" method="">
-                     <o base="^" line="23"/>
-                  </o>
-               </o>
-            </o>
-         </o>
-         <o level="2" line="22.15" name="a"/>
-         <o level="2" line="22.24" name="halfPerimeterApplic"/>
-         <o level="3" line="22.12" name="b"/>
-         <o level="3" line="22.13" name="areaApplic"/>
-      </o>
-      <o line="26" name="app" original-name="app">
-         <o line="26" name="args" vararg=""/>
-         <o base="rectangleAbstr" line="27" name="rec1Applic" ref="12">
-            <o base="org.eolang.int" data="int" line="28">10</o>
-            <o base="app$1$α1" cut="40" line="29" ref="29">
-               <o as="args" base="args" level="1" ref="26"/>
-               <o as="@" base="@" level="1" ref="31"/>
-            </o>
-         </o>
-         <o base="org.eolang.io.stdout" line="31" name="@">
-            <o base="org.eolang.txt.sprintf" line="32">
-               <o base="org.eolang.string" data="string" line="33">%dside a:%d\nside b:%d\narea: %d\nperimeter: %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n</o>
-               <o base="app$2$0$α1" cut="44" line="34" ref="34">
-                  <o as="args" base="args" level="1" ref="26"/>
-                  <o as="rec1Applic" base="rec1Applic" level="1" ref="27"/>
-               </o>
-               <o base=".a" line="36" method="">
-                  <o base="rec1Applic" line="36" ref="27"/>
-               </o>
-               <o base=".b" line="37" method="">
-                  <o base="rec1Applic" line="37" ref="27"/>
-               </o>
-               <o base=".areaApplic" line="38" method="">
-                  <o base="rec1Applic" line="38" ref="27"/>
-               </o>
-               <o base=".perimeterAbstr" line="39" method="">
-                  <o base="rec1Applic" line="39" ref="27"/>
-               </o>
-               <o base=".halfPerimeterAbstr" line="40" method="">
-                  <o base=".perimeterAbstr" line="40" method="">
-                     <o base="rec1Applic" line="40" ref="27"/>
-                  </o>
-               </o>
-               <o base=".halfPerimeterApplic" line="41" method="">
-                  <o base=".perimeterAbstr" line="41" method="">
-                     <o base="rec1Applic" line="41" ref="27"/>
+            <o base=".b" line="16" method="">
+               <o base=".^" line="16" method="">
+                  <o base=".^" line="16" method="">
+                     <o base="^" line="16"/>
                   </o>
                </o>
             </o>
          </o>
+         <o level="2" line="15.7" name="z"/>
+         <o level="2" line="15.7" name="q"/>
+         <o level="2" line="15.7" name="h"/>
+         <o level="2" line="15.8" name="a"/>
+         <o level="2" line="15.17" name="halfPerimeterApplic"/>
+         <o level="3" line="15.5" name="b"/>
+         <o level="3" line="15.6" name="area"/>
       </o>
-      <o ancestors="1" line="29" name="app$1$α1" parent="app">
-         <o base="org.eolang.int" data="int" line="30" name="@">15</o>
-         <o level="1" line="29.26" name="args"/>
+      <o line="19" name="app" original-name="app">
+         <o line="19" name="args" vararg=""/>
+         <o base="rectangle" line="20" name="rec1" ref="5">
+            <o base="org.eolang.int" data="int" line="21">10</o>
+            <o base="app$1$α1" cut="36" line="22" ref="22">
+               <o as="args" base="args" level="1" ref="19"/>
+               <o as="@" base="@" level="1" ref="24"/>
+               <o as="ar" base="ar" level="1" ref="29"/>
+               <o as="per" base="per" level="1" ref="30"/>
+            </o>
+         </o>
+         <o base="org.eolang.io.stdout" line="24" name="@">
+            <o base="org.eolang.txt.sprintf" line="25">
+               <o base="org.eolang.string" data="string" line="26">side a:%d\nside b:%d\narea: %d\nperimeter: %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n</o>
+               <o base=".a" line="27" method="">
+                  <o base="rec1" line="27" ref="20"/>
+               </o>
+               <o base=".b" line="28" method="">
+                  <o base="rec1" line="28" ref="20"/>
+               </o>
+               <o base="ar" cut="1" line="29" ref="29"/>
+               <o base="per" cut="1" line="30" ref="30"/>
+               <o base=".halfPerimeterAbstr" line="31" method="">
+                  <o base=".perimeter" line="31" method="">
+                     <o base="rec1" line="31" ref="20"/>
+                  </o>
+               </o>
+               <o base=".halfPerimeterApplic" line="32" method="">
+                  <o base="per" line="32" ref="30"/>
+               </o>
+            </o>
+         </o>
+         <o base=".area" line="29" method="" name="ar">
+            <o base="rec1" line="29" ref="20"/>
+         </o>
+         <o base=".perimeter" line="30" method="" name="per">
+            <o base="rec1" line="30" ref="20"/>
+         </o>
       </o>
-      <o ancestors="1" line="34" name="app$2$0$α1" parent="app">
-         <o base="org.eolang.int" data="int" line="35" name="@">1</o>
-         <o level="1" line="34.26" name="args"/>
-         <o level="1" line="34.27" name="rec1Applic"/>
+      <o ancestors="1" line="22" name="app$1$α1" parent="app">
+         <o base="org.eolang.int" data="int" line="23" name="@">15</o>
+         <o level="1" line="22.19" name="args"/>
+         <o level="1" line="22.29" name="ar"/>
+         <o level="1" line="22.30" name="per"/>
       </o>
    </objects>
 </program>

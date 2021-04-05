@@ -1,23 +1,19 @@
 package transpiler.xml2medium;
 
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import transpiler.mediumcodemodel.EOAbstraction;
+import transpiler.mediumcodemodel.EOSourceEntity;
+import transpiler.mediumcodemodel.EOSourceFile;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.w3c.dom.*;
-import transpiler.mediumcodemodel.EOAbstraction;
-import transpiler.mediumcodemodel.EOPackage;
-import transpiler.mediumcodemodel.EOSourceEntity;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.xml.sax.SAXException;
-import transpiler.mediumcodemodel.EOSourceFile;
 
 public class XML2MediumParser {
 
@@ -34,9 +30,9 @@ public class XML2MediumParser {
 
         EOSourceFile sourceFile = FileMetadataParsingUtils.parseSourceFile(this.file, this.doc, this.xPath);
 
-        ArrayList<EOSourceEntity> objects = ObjectsParsingUtils.parseObjects(this.file, this.doc, this.xPath);
-
-        return new EOPackage("aaa");
+        ArrayList<EOAbstraction> objects = ObjectsParsingUtils.parseObjects(this.file, this.doc, this.xPath, sourceFile);
+        sourceFile.setObjects(objects);
+        return sourceFile;
     }
 
     private void loadXmlDocument() {

@@ -1,10 +1,11 @@
 package transpiler.mediumcodemodel;
 
-import transpiler.targetjavamodel.TargetJavaEntity;
+import org.ainslec.picocog.PicoWriter;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
-public class EOPackage extends EOSourceEntity{
+public class EOPackage extends EOSourceEntity {
 
     private final String packageName;
     private final ArrayList<EOSourceFile> files = new ArrayList<>();
@@ -29,7 +30,7 @@ public class EOPackage extends EOSourceEntity{
     }
 
     @Override
-    public TargetJavaEntity transpile() {
+    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter parent) {
         return null;
     }
 }

@@ -4,16 +4,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import transpiler.mediumcodemodel.EOAbstraction;
-import transpiler.mediumcodemodel.EOApplication;
-import transpiler.mediumcodemodel.EOInputAttribute;
-import transpiler.mediumcodemodel.EOSourceEntity;
+import transpiler.mediumcodemodel.*;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ObjectsParsingUtils {
     private static final String NAME_ATTR = "name";
@@ -22,48 +21,160 @@ public class ObjectsParsingUtils {
     private static final String VARARG_ATTR = "vararg";
     private static final String METHOD_ATTR = "method";
     private static final String BASE_ATTR = "base";
+    private static final String DATA_ATTR = "data";
 
-    public static ArrayList<EOSourceEntity> parseObjects(File file, Document doc, XPath xPath) throws XML2MediumParser.XML2MediumParserException {
 
-        ArrayList<EOAbstraction> abstractions =  parseAbstractions(file, doc, xPath);
+    public static ArrayList<EOAbstraction> parseObjects(File file, Document doc, XPath xPath, EOSourceFile fileScope) throws XML2MediumParser.XML2MediumParserException {
 
-        return new ArrayList<>();
-        /*NodeList objectsTags = getObjectsTags(file, doc, xPath);
+        ArrayList<EOAbstraction> abstractions = parseAbstractions(file, doc, xPath);
+        abstractions = deflateAbstractions(abstractions, fileScope);
 
-        for (int i = 0; i < objectsTags.getLength(); i++) {
-            Node object = objectsTags.item(i);
-            System.out.println(isApplication(file, object, xPath));
-        }
-
-        return new ArrayList<>();*/
+        return abstractions;
     }
 
-    private static NodeList getObjectsTags(File file, Document doc, XPath xPath) throws XML2MediumParser.XML2MediumParserException {
-        /* locating and retrieving the <objects> tag */
-        NodeList objects;
-        try {
-            objects = (NodeList)xPath.evaluate
-                    (
-                            "/program/objects/o",
-                            doc,
-                            XPathConstants.NODESET
-                    );
-        } catch (Exception e) {
-            throw new XML2MediumParser.XML2MediumParserException("Internal error occurred while parsing the <objects> tag contents in File " + file.getName() + ".");
+
+    private static ArrayList<EOAbstraction> deflateAbstractions(ArrayList<EOAbstraction> flattenedAbstractions, EOSourceFile fileScope) throws XML2MediumParser.XML2MediumParserException {
+        ArrayList<EOAbstraction> fileLevelAbstractions = new ArrayList<>();
+
+        for (int i = 0; i < flattenedAbstractions.size(); i++) {
+            EOAbstraction abstraction = flattenedAbstractions.get(i);
+            String xmlName = abstraction.getXmlName();
+            /* analyzing components of the xml name (these reflect the hierarchical structure of the abstraction) */
+            int index;
+            if (!abstraction.getInstanceName().isPresent()) {
+                // anonymous abstraction
+                index = lastIndexOfRegex(xmlName, "((\\$\\d+)+\\$\\α\\d+)");
+            } else {
+                // normal named abstraction
+                index = xmlName.lastIndexOf('$');
+            }
+            if (index == -1) {
+                // this abstraction is not nested (it is in the file-level scope)
+                abstraction.setScope(fileScope);
+                fileLevelAbstractions.add(abstraction);
+            } else {
+                // this abstraction is nested (and we have to find its scope)
+                String parentXmlName = xmlName.substring(0, index);
+                deflateAbstraction(flattenedAbstractions, abstraction, parentXmlName, fileScope.getFileName());
+            }
         }
 
-        if (objects.getLength() == 0) {
-            throw new XML2MediumParser.XML2MediumParserException("File " + file.getName() + " contains no object declarations in the <objects> tag. There must be at least one object declaration in the <objects> tag.");
+        return fileLevelAbstractions;
+    }
+
+    private static void deflateAbstraction(ArrayList<EOAbstraction> flattenedAbstractions, EOAbstraction nestedAbstraction, String parentXmlName, String fileName) throws XML2MediumParser.XML2MediumParserException {
+        Optional<String> name = nestedAbstraction.getInstanceName();
+        Optional<EOAbstraction> parent =
+                flattenedAbstractions
+                        .stream()
+                        .filter(abstraction -> abstraction.getXmlName().equals(parentXmlName))
+                        .findFirst();
+        if (!parent.isPresent()) {
+            throw new XML2MediumParser.XML2MediumParserException("File " + fileName + " > abstraction " + nestedAbstraction.getXmlName() + ": could not find its parent with the name " + parentXmlName);
         }
 
-        return objects;
+        // this abstraction is scoped to its parent
+        nestedAbstraction.setScope(parent.get());
+
+        if (!name.isPresent() || name.get().equals("@")) {
+            // we do not need to reference
+            // anonymous abstractions and abstraction-based decorations
+            // as sub-abstractions
+            // we only need to dereference the applications referencing them
+            dereferenceWrapperApplications(parent.get(), nestedAbstraction, fileName);
+        } else {
+            // this is an abstraction-based object attribute
+            // so, we add it as a sub-abstraction
+            parent.get().addSubAbstraction(nestedAbstraction);
+            // and dereference the application referencing it
+            dereferenceWrapperApplications(parent.get(), nestedAbstraction, fileName);
+        }
+
+    }
+
+    private static void dereferenceWrapperApplications(EOAbstraction parent, EOAbstraction wrappedAbstraction, String fileName) throws XML2MediumParser.XML2MediumParserException {
+        ArrayList<EOApplication> boundAttributes = parent.getBoundAttributes();
+
+        if (wrappedAbstraction.getInstanceName().isPresent()) {
+            // for named objects we find their sole wrapper
+            EOApplication[] wrappers =
+                    boundAttributes
+                            .stream()
+                            .filter(eoApplication -> eoApplication.getAppliedObject().equals(wrappedAbstraction.getXmlName()))
+                            .toArray(EOApplication[]::new);
+
+            if (wrappers.length == 0) {
+                throw new XML2MediumParser.XML2MediumParserException("File " + fileName + " > abstraction " + parent.getXmlName() + ": there is no application-based wrapper for the sub-abstraction " + wrappedAbstraction.getXmlName());
+            }
+            if (wrappers.length > 1) {
+                throw new XML2MediumParser.XML2MediumParserException("File " + fileName + " > abstraction " + parent.getXmlName() + ": there are more than one application-based wrappers for the sub-abstraction " + wrappedAbstraction.getXmlName());
+            }
+            wrappers[0].setWrappedAbstraction(wrappedAbstraction);
+        } else {
+            // for anonymous objects we need to traverse applications
+            boolean dereferenced = false;
+
+            for (int i = 0; i < boundAttributes.size(); i++) {
+                dereferenced = dereferenced || dereferenceApplicationsForAnonymous(boundAttributes.get(i), wrappedAbstraction);
+
+                if (dereferenced == true) {
+                    break;
+                }
+            }
+
+            if (!dereferenced) {
+                throw new XML2MediumParser.XML2MediumParserException("File " + fileName + " > abstraction " + parent.getXmlName() + ": could not dereference the anonymous abstraction (no reference is present in application) " + wrappedAbstraction.getXmlName());
+            }
+        }
+
+
+    }
+
+    private static boolean dereferenceApplicationsForAnonymous(EOApplication root, EOAbstraction wrappedAbstraction) throws XML2MediumParser.XML2MediumParserException {
+        String wrappedName = wrappedAbstraction.getXmlName();
+        if (root.getAppliedObject().equals(wrappedName)) {
+            root.setWrappedAbstraction(wrappedAbstraction);
+            return true;
+        }
+        ArrayList<EOApplication> arguments = root.getArguments();
+
+        for (int i = 0; i < arguments.size(); i++) {
+            EOApplication argument = arguments.get(i);
+
+            if (argument.getAppliedObject().equals(wrappedName)) {
+                argument.setWrappedAbstraction(wrappedAbstraction);
+                return true;
+            }
+        }
+
+        if (root.isDotNotation()) {
+            EOApplication dotNotationBase = root.getDotNotationBase();
+            if (dotNotationBase.getAppliedObject().equals(wrappedName)) {
+                dotNotationBase.setWrappedAbstraction(wrappedAbstraction);
+                return true;
+            }
+        }
+
+        // let's try to find the wrapper recursively
+        for (int i = 0; i < arguments.size(); i++) {
+            EOApplication argument = arguments.get(i);
+            if (dereferenceApplicationsForAnonymous(argument, wrappedAbstraction)) {
+                return true;
+            }
+        }
+        if (root.isDotNotation()) {
+            return dereferenceApplicationsForAnonymous(root.getDotNotationBase(), wrappedAbstraction);
+        }
+
+        return false;
+
     }
 
     private static ArrayList<EOAbstraction> parseAbstractions(File file, Document doc, XPath xPath) throws XML2MediumParser.XML2MediumParserException {
         ArrayList<EOAbstraction> abstractions = new ArrayList<>();
         NodeList abstractionDeclarations;
         try {
-            abstractionDeclarations = (NodeList)xPath.evaluate
+            abstractionDeclarations = (NodeList) xPath.evaluate
                     (
                             "/program/objects/o[./o[not(@base) or @name]]",
                             doc,
@@ -89,7 +200,6 @@ public class ObjectsParsingUtils {
             abstraction.setApplications(applications);
             abstractions.add(abstraction);
         }
-
 
 
         return abstractions;
@@ -134,8 +244,7 @@ public class ObjectsParsingUtils {
         Optional<String> name;
         if (nameNode == null) {
             name = Optional.empty();
-        }
-        else {
+        } else {
             name = Optional.of(nameNode.getNodeValue());
         }
 
@@ -149,7 +258,7 @@ public class ObjectsParsingUtils {
         ArrayList<EOInputAttribute> attributes = new ArrayList<>();
         NodeList attributesDeclarations;
         try {
-            attributesDeclarations = (NodeList)xPath.evaluate
+            attributesDeclarations = (NodeList) xPath.evaluate
                     (
                             "o[not(@base or @as or @level) and @name]",
                             abstractionDeclaration,
@@ -171,12 +280,7 @@ public class ObjectsParsingUtils {
             /* retrieving information if the attribute is variable-length */
             Node varargNode = declarationAttributes.getNamedItem(VARARG_ATTR);
             boolean vararg;
-            if (varargNode == null) {
-                vararg = false;
-            }
-            else {
-                vararg = true;
-            }
+            vararg = varargNode != null;
 
             attributes.add(new EOInputAttribute(name, vararg));
 
@@ -189,7 +293,7 @@ public class ObjectsParsingUtils {
         ArrayList<EOApplication> applications = new ArrayList<>();
         NodeList applicationDeclarations;
         try {
-            applicationDeclarations = (NodeList)xPath.evaluate
+            applicationDeclarations = (NodeList) xPath.evaluate
                     (
                             "o[not(@as or @level) and @name and @base]",
                             abstractionDeclaration,
@@ -201,29 +305,32 @@ public class ObjectsParsingUtils {
 
         for (int i = 0; i < applicationDeclarations.getLength(); i++) {
             Node applicationDeclaration = applicationDeclarations.item(i);
-            EOApplication application = parseApplicationRecursively(file.getName(), xPath, applicationDeclaration);
-            application.setScope(baseAbstraction);
+            EOApplication application = parseApplicationRecursively(file.getName(), xPath, applicationDeclaration, baseAbstraction);
             applications.add(application);
         }
 
         return applications;
     }
 
-    private static EOApplication parseApplicationRecursively(String fileName, XPath xPath, Node application) throws XML2MediumParser.XML2MediumParserException {
+    private static EOApplication parseApplicationRecursively(String fileName, XPath xPath, Node application, EOAbstraction scope) throws XML2MediumParser.XML2MediumParserException {
         String lineNumber = parseLineNumber(fileName, application);
         String base = parseApplicationBase(fileName, lineNumber, application);
         boolean isDotNotation = parseHasMethodAttr(application) || base.startsWith(".");
-        Optional<String> name = parseApplicationName(application);
-        if (name.isPresent() && isDotNotation) {
-            name = Optional.of(name.get().replaceAll("\\.", ""));
+        Optional<EOData> data = parseData(fileName, application, lineNumber);
+        if (isDotNotation) {
+            // TODO what if base is aliased somehow? need some analysis here
+            base = base.replaceAll("\\.", "");
         }
-        EOApplication eoApplication = new EOApplication(isDotNotation, base, name);
+
+        Optional<String> name = parseApplicationName(application);
+        EOApplication eoApplication = new EOApplication(isDotNotation, base, name, data);
+        eoApplication.setScope(scope);
 
         ArrayList<EOApplication> arguments = new ArrayList<>();
 
         NodeList argumentsDeclarations;
         try {
-            argumentsDeclarations = (NodeList)xPath.evaluate
+            argumentsDeclarations = (NodeList) xPath.evaluate
                     (
                             "o[not(@as or @level) and @base]",
                             application,
@@ -235,8 +342,7 @@ public class ObjectsParsingUtils {
 
         for (int i = 0; i < argumentsDeclarations.getLength(); i++) {
             Node applicationDeclaration = argumentsDeclarations.item(i);
-            EOApplication argumentApplication = parseApplicationRecursively(fileName, xPath, applicationDeclaration);
-            argumentApplication.setScope(eoApplication);
+            EOApplication argumentApplication = parseApplicationRecursively(fileName, xPath, applicationDeclaration, scope);
             arguments.add(argumentApplication);
         }
 
@@ -252,6 +358,37 @@ public class ObjectsParsingUtils {
         return eoApplication;
     }
 
+    private static Optional<EOData> parseData(String fileName, Node application, String lineNumber) throws XML2MediumParser.XML2MediumParserException {
+        NamedNodeMap declarationAttributes = application.getAttributes();
+        Node dataNode = declarationAttributes.getNamedItem(DATA_ATTR);
+        if (dataNode == null) {
+            return Optional.empty();
+        } else {
+            String type = dataNode.getNodeValue();
+            String value = null;
+            try {
+                value = application.getFirstChild().getNodeValue();
+                switch (type) {
+                    case "int":
+                        return Optional.of(new EOint(Long.parseLong(value)));
+                    case "float":
+                        return Optional.of(new EOfloat(Double.parseDouble(value)));
+                    case "bool":
+                        return Optional.of(new EObool(Boolean.parseBoolean(value)));
+                    case "char":
+                        return Optional.of(new EOchar(value.charAt(0)));
+                    case "string":
+                        return Optional.of(new EOstring(value));
+                    default:
+                        throw new XML2MediumParser.XML2MediumParserException("File " + fileName + " > line #" + lineNumber + ": unknown data type '" + type + "'");
+
+                }
+            } catch (Exception e) {
+                throw new XML2MediumParser.XML2MediumParserException("File " + fileName + " > line #" + lineNumber + ": could not cast '" + value + "' to type '" + type + "'");
+            }
+        }
+    }
+
     /***
      * Parses the 'name' attribute that contains the normal name (i.e. in the form it is present in the source program)
      * of the application {@code declaration}.
@@ -263,8 +400,7 @@ public class ObjectsParsingUtils {
         Optional<String> name;
         if (nameNode == null) {
             name = Optional.empty();
-        }
-        else {
+        } else {
             name = Optional.of(nameNode.getNodeValue());
         }
 
@@ -277,12 +413,7 @@ public class ObjectsParsingUtils {
     private static boolean parseHasMethodAttr(Node declaration) {
         NamedNodeMap declarationAttributes = declaration.getAttributes();
         Node methodNode = declarationAttributes.getNamedItem(METHOD_ATTR);
-        if (methodNode == null) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return methodNode != null;
     }
 
     private static String parseApplicationBase(String filename, String lineNumber, Node declaration) throws XML2MediumParser.XML2MediumParserException {
@@ -295,4 +426,25 @@ public class ObjectsParsingUtils {
 
         return base;
     }
+
+    /**
+     * Version of lastIndexOf that uses regular expressions for searching.
+     *
+     * @param str    String in which to search for the pattern.
+     * @param toFind Pattern to locate.
+     * @return The index of the requested pattern, if found; NOT_FOUND (-1) otherwise.
+     */
+    public static int lastIndexOfRegex(String str, String toFind) {
+        Pattern pattern = Pattern.compile(toFind);
+        Matcher matcher = pattern.matcher(str);
+        int lastIndex = -1;
+
+        // Search for the given pattern
+        while (matcher.find()) {
+            lastIndex = matcher.start();
+        }
+
+        return lastIndex;
+    }
+
 }

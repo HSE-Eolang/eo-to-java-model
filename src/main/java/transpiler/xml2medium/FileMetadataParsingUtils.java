@@ -5,7 +5,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import transpiler.mediumcodemodel.EOPackage;
-import transpiler.mediumcodemodel.EOSourceEntity;
 import transpiler.mediumcodemodel.EOSourceFile;
 
 import javax.xml.xpath.XPath;
@@ -46,8 +45,7 @@ public class FileMetadataParsingUtils {
         String sourceFileName;
         try {
             sourceFileName = programTagNameAttr.getNodeValue();
-        }
-        catch (DOMException e) {
+        } catch (DOMException e) {
             throw new XML2MediumParser.XML2MediumParserException("File " + file.getName() + ": the attribute 'name' of the <program> tag is too long to be parsed.");
         }
         if (sourceFileName == null || sourceFileName.isEmpty()) {
@@ -60,7 +58,7 @@ public class FileMetadataParsingUtils {
     private static String parseSourceFilePackageName(File file, Document doc, XPath xpath) throws XML2MediumParser.XML2MediumParserException {
         NodeList packages;
         try {
-            packages = (NodeList)xpath.evaluate
+            packages = (NodeList) xpath.evaluate
                     (
                             "/program/metas/meta[.//head[text()='package']]/tail/text()",
                             doc,
@@ -81,8 +79,7 @@ public class FileMetadataParsingUtils {
         String packageName;
         try {
             packageName = packageTag.getNodeValue();
-        }
-        catch (DOMException e) {
+        } catch (DOMException e) {
             throw new XML2MediumParser.XML2MediumParserException("File " + file.getName() + ": the package name in <program>/<metas> is too long to be parsed.");
         }
         if (packageName == null || packageName.isEmpty()) {
