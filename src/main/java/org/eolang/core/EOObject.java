@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Optional;
 
 
 /**
@@ -24,6 +25,14 @@ public abstract class EOObject implements Cloneable{
      * @return the boolean
      */
     public boolean _isCalculable(){return false;}
+
+    public Optional<EOObject> _getDecoratedObject() {
+        return Optional.empty();
+    }
+
+    public Optional<EOObject> _getParentObject() {
+        return Optional.empty();
+    }
 
     /**
      * Setting the parent object.
@@ -43,8 +52,11 @@ public abstract class EOObject implements Cloneable{
      * @return Data
      */
     public EOData _getData(){
-        //_freeAttributes();
-        return new EOData("");
+        Optional<EOObject> decoratee = _getDecoratedObject();
+        if(!decoratee.isPresent()) {
+            throw new RuntimeException("Object cannot be dataized.");
+        }
+        return decoratee.get()._getData();
     }
 
     /**
