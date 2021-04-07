@@ -2,6 +2,8 @@ package org.eolang.core;
 
 import org.eolang.core.data.EOData;
 import org.eolang.core.data.EODataObject;
+
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
@@ -77,7 +79,12 @@ public abstract class EOObject implements Cloneable{
             Method method = this.getClass().getDeclaredMethod("EO"+ name);
             method.setAccessible(true);
             return (EOObject)method.invoke(this);
-        } catch (Exception e) {}
+        } catch ( NoSuchMethodException e) {
+            System.out.println("attribute \"" + name + "\" not found");
+            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
@@ -88,13 +95,33 @@ public abstract class EOObject implements Cloneable{
      * @Param freeAtt Available attributes
      * @return Object Attribute
      */
-    public EOObject _getAttribute(String name, EOObject... freeAtt){
+    public EOObject _getAttribute(String name, EOObject freeAtt) {
         EOObject res = new EODataObject();
         try {
             Method method = this.getClass().getDeclaredMethod("EO"+ name, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt);
-        } catch (Exception e) {}
+        } catch ( NoSuchMethodException e) {
+            System.out.println("attribute \"" + name + "\" not found");
+            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2){
+        EOObject res = new EODataObject();
+        try {
+            Method method = this.getClass().getDeclaredMethod("EO"+ name, EOObject.class, EOObject.class);
+            method.setAccessible(true);
+            return (EOObject) method.invoke(this, freeAtt1, freeAtt2);
+        } catch ( NoSuchMethodException e) {
+            System.out.println("attribute \"" + name + "\" not found");
+            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
