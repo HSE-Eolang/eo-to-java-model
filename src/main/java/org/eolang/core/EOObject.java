@@ -96,7 +96,7 @@ public abstract class EOObject implements Cloneable {
      *
      * @param name Object name
      * @return Object Attribute
-     * @Param freeAtt Available attributes
+     * @param freeAtt Available attributes
      */
     public EOObject _getAttribute(String name, EOObject freeAtt) {
         EOObject res = new EODataObject();
@@ -125,6 +125,7 @@ public abstract class EOObject implements Cloneable {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+        return res;
     }
 
 }
