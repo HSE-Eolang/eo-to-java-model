@@ -26,7 +26,7 @@ public class EOfloat extends EOObject {
      * @return An object representing the sum of this float and the {@code rightAddend} free attribute
      */
     public EOfloat EOadd(EOObject rightAddend){
-        return new EOfloat(this.value - rightAddend._getData().toFloat());
+        return new EOfloat(this.value + rightAddend._getData().toFloat());
     }
 
     /***
@@ -141,7 +141,7 @@ public class EOfloat extends EOObject {
      * @return An object representing the  {@code exponent} free attribute)th power of this float
      */
     public EOfloat EOpow(EOObject exponent){
-        return new EOfloat(Math.pow(this.value, exponent._getData().toInt()));
+        return new EOfloat(Math.pow(this.value, exponent._getData().toFloat()));
     }
 
 }

@@ -31,7 +31,7 @@ public class EOstring extends EOObject {
      * Makes an integer type of this string
      * @return An object representing the integer value of this string
      */
-    public EOint toInt(){
+    public EOint EOtoInt(){
         return new EOint(Long.parseLong(stringValue));
     }
 
@@ -41,6 +41,6 @@ public class EOstring extends EOObject {
      * @return An object representing the truth value of the comparison of this string with the {@code rightString} free attribute
      */
     public EObool EOeq(EOObject rightString){
-        return new EObool(stringValue.equals(rightString.toString()));
+        return new EObool(stringValue.equals(rightString._getData().toString()));
     }
 }

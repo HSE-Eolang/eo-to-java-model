@@ -84,7 +84,7 @@ public class EObool extends EOObject {
      * @param falseObject a false bool object to evaluate with
      * @return An object representing the number of successful cycles
      */
-    public EOData EOwhile(EOObject falseObject){
+    public EOObject EOwhile(EOObject falseObject){
 //        TO DO
         long count =  0L;
         while(true){
@@ -96,7 +96,7 @@ public class EObool extends EOObject {
             eoObject._setParent(new EODataObject(count));
             ++count;
         }
-        return new EODataObject(count)._getData();
+        return new EODataObject(count);
     }
 
 }

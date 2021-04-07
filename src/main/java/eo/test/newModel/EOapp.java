@@ -75,7 +75,7 @@ public class EOapp extends EOObject {
     public EOData _getData() {
         return new EOstdout(
                 new EOsprintf(
-                        new EOstring("side a:%d\\nside b:%d\\narea: %d\\nperimeter: %d\\nhalfPerimAbst: %d\\nhalfPerimApplic: %d\\n"),
+                        new EOstring("side a:%s\nside b:%s\narea: %s\nperimeter: %s\nhalfPerimAbst: %s\nhalfPerimApplic: %s\n"),
                         EOrec1()._getAttribute("a"),
                         EOrec1()._getAttribute("b"),
                         EOar(),

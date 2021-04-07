@@ -5,22 +5,23 @@ import org.eolang.core.data.EODataObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 
 
 /**
- * Базовый EO объект. На основе этого класса создаются классы для создания объектов пользователяю
+ * Basic EO object. Based on this class, classes are created for creating user objects.
  */
 public abstract class EOObject implements Cloneable{
     /**
-     * Ссылка на родетеля объекта
+     * Link to the parent of the object
      */
     protected EOObject _parent;
 
     /**
-     * Проверка может ли быть датаризован объект при создании для кеширования объекта датаризации.
-     * Вариант решения проблемы экспоненциального роста времени датаризации при рекурсии.
+     * Checking if an object can be datarized when creating a datarized object for caching.
+     * A variant of solving the problem of exponential growth of datarization time during recursion.
      * @return the boolean
      */
     public boolean _isCalculable(){return false;}
@@ -34,9 +35,9 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Установка родителя объект.
+     * Setting the parent object.
      *
-     * @param _parent Объект родитель
+     * @param _parent The parent object
      * @return this
      */
     public EOObject _setParent(EOObject _parent){
@@ -46,9 +47,9 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Функция выполняющая датаризацию объекта
+     * Function that performs dateization of the object
      *
-     * @return Данные
+     * @return Data
      */
     public EOData _getData(){
         Optional<EOObject> decoratee = _getDecoratedObject();
@@ -59,9 +60,9 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Создание копии объекта.
+     * Creation of a copy of an object.
      *
-     * @return копия объекта
+     * @return a copy of the object
      */
     public EOObject _clone() {
         /*try{
@@ -84,7 +85,7 @@ public abstract class EOObject implements Cloneable{
     }
 
     /**
-     * Присвоение атрибутам объекта значения null для последующего удаления атрибутов сборщиком мусора.
+     * Assigning the object's attributes to null for later removal of the attributes by the garbage collector.
      */
     /*public void _freeAttributes(){
         for (Field field : this.getClass().getDeclaredFields()) {
@@ -99,73 +100,99 @@ public abstract class EOObject implements Cloneable{
     }*/
 
     /**
-     * Копирование атрибута объекта по имени.
+     * Copying an attribute of an object by name.
      *
-     * @param name Имя объекта
-     * @return Атрибута объекта
+     * @param name Object name
+     * @return Object Attribute
      */
-    public EOObject _getAttribute(String name) {
-        EOObject res = new EODataObject();
-        try{
-            for (Field field : this.getClass().getDeclaredFields()) {
-                if (field.getName().equals(name)) {
-                    field.setAccessible(true);
-                    EOObject value = (EOObject) field.get(this);
-                    return value._clone();
-                }
+//    public EOObject _getAttribute(String name) {
+//        EOObject res = new EODataObject();
+//        try{
+//            for (Field field : this.getClass().getDeclaredFields()) {
+//                if (field.getName().equals(name)) {
+//                    field.setAccessible(true);
+//                    EOObject value = (EOObject) field.get(this);
+//                    return value._clone();
+//                }
+//
+//            }
+//        }catch (IllegalAccessException iaException){}
+//        try{
+//            Class<?> attClasss = Class.forName(this.getClass().getName()+"$EO"+name);
+//            Constructor<?> attConstructor = attClasss.getConstructor();
+//            return ((EOObject)attConstructor.newInstance())._setParent(this);
+//        } catch (Exception e) {}
+//        if(_parent != null){
+//            res = _parent._getAttribute(name);
+//        }
+//        try{
+//            if(((EODataObject) res).isNoData()){
+//                Class<?> attClasss = Class.forName(this.getClass().getPackage().getName() +".EO"+name);
+//                Constructor<?> attConstructor = attClasss.getConstructor();
+//                return (EOObject)attConstructor.newInstance();
+//            }
+//
+//        } catch (Exception e) {}
+//        return res;
+//    }
 
-            }
-        }catch (IllegalAccessException iaException){}
-        try{
-            Class<?> attClasss = Class.forName(this.getClass().getName()+"$EO"+name);
-            Constructor<?> attConstructor = attClasss.getConstructor();
-            return ((EOObject)attConstructor.newInstance())._setParent(this);
+    /**
+     * Copying an attribute of an object by name with the installation of free attributes
+     *
+     * @param name Object name
+     * @Param freeAtt Available attributes
+     * @return Object Attribute
+     */
+//    public EOObject _getAttribute(String name, EOObject... freeAtt) {
+//        EOObject res = new EODataObject();
+//        try {
+//            String className = this.getClass().getName()+"$EO"+name;
+//            Class<?> attClasss = Class.forName(className);;
+//            Constructor<?> attConstructor = Arrays.stream(attClasss.getConstructors())
+//                    .filter(constructor -> constructor.getParameterTypes().length == freeAtt.length)
+//                    .findFirst().get();
+//            return (EOObject)attConstructor.newInstance((Object[])freeAtt);
+//        } catch (Exception e) {}
+//        if(_parent != null){
+//            res = _parent._getAttribute(name, (EOObject[])freeAtt);
+//        }
+//        try{
+//            if(((EODataObject) res).isNoData()){
+//                String className = this.getClass().getPackage().getName() +".EO"+name;
+//                Class<?> attClasss = Class.forName(className);
+//                Constructor<?> attConstructor = Arrays.stream(attClasss.getConstructors())
+//                        .filter(constructor -> constructor.getParameterTypes().length == freeAtt.length)
+//                        .findFirst().get();
+//                return (EOObject)attConstructor.newInstance((Object[])freeAtt);
+//            }
+//
+//        } catch (Exception e) {}
+//        return res;
+//    }
+
+    public EOObject _getAttribute(String name, EOObject... freeAtt){
+        EOObject res = new EODataObject();
+        try {
+            Method method = this.getClass().getDeclaredMethod("EO"+ name, EOObject.class);
+            method.setAccessible(true);
+            return (EOObject) method.invoke(this, freeAtt);
         } catch (Exception e) {}
         if(_parent != null){
-            res = _parent._getAttribute(name);
+            res = _parent._getAttribute(name, freeAtt);
         }
-        try{
-            if(((EODataObject) res).isNoData()){
-                Class<?> attClasss = Class.forName(this.getClass().getPackage().getName() +".EO"+name);
-                Constructor<?> attConstructor = attClasss.getConstructor();
-                return (EOObject)attConstructor.newInstance();
-            }
-
-        } catch (Exception e) {}
         return res;
     }
 
-    /**
-     * Копирование атрибута объекта по имени с установкойй свободных аттрибутов
-     *
-     * @param name    Имя объекта
-     * @param freeAtt Свободные аттрибуты
-     * @return Атрибута объекта
-     */
-    public EOObject _getAttribute(String name, EOObject... freeAtt) {
+    public EOObject _getAttribute(String name){
         EOObject res = new EODataObject();
         try {
-            String className = this.getClass().getName()+"$EO"+name;
-            Class<?> attClasss = Class.forName(className);;
-            Constructor<?> attConstructor = Arrays.stream(attClasss.getConstructors())
-                    .filter(constructor -> constructor.getParameterTypes().length == freeAtt.length)
-                    .findFirst().get();
-            return (EOObject)attConstructor.newInstance((Object[])freeAtt);
+            Method method = this.getClass().getDeclaredMethod("EO"+ name);
+            method.setAccessible(true);
+            return (EOObject)method.invoke(this);
         } catch (Exception e) {}
         if(_parent != null){
-            res = _parent._getAttribute(name, (EOObject[])freeAtt);
+            return _parent._getAttribute(name);
         }
-        try{
-            if(((EODataObject) res).isNoData()){
-                String className = this.getClass().getPackage().getName() +".EO"+name;
-                Class<?> attClasss = Class.forName(className);
-                Constructor<?> attConstructor = Arrays.stream(attClasss.getConstructors())
-                        .filter(constructor -> constructor.getParameterTypes().length == freeAtt.length)
-                        .findFirst().get();
-                return (EOObject)attConstructor.newInstance((Object[])freeAtt);
-            }
-
-        } catch (Exception e) {}
         return res;
     }
 }
