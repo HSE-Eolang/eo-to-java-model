@@ -13,8 +13,8 @@ public class EOrectangle$EOarea extends EOObject {
     public EOData _getData() {
 
         EOData res = new EOmul(
-                        _getAttribute("a"),
-                        _getAttribute("b")
+                _getAttribute("a"),
+                _getAttribute("b")
         )._setParent(this)._getData();
         return res;
     }

@@ -1,9 +1,9 @@
+import eo.test.shapes.EOrectangle;
+import eo.test.shapes.EOtriangle;
 import org.eolang.core.EOObject;
 import org.eolang.core.data.EODataObject;
 import org.eolang.io.EOstdout;
 import org.eolang.txt.EOsprintf;
-import eo.test.shapes.EOrectangle;
-import eo.test.shapes.EOtriangle;
 
 public class MainShapes {
     public static void main(String[] args) {

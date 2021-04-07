@@ -8,12 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test cases for {@link EOint}
- *
  */
 class EOintTest {
 
@@ -29,9 +27,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOadd}
-    * checks if addition is successful
-    */
+     * Test for {@code EOadd}
+     * checks if addition is successful
+     */
     @Test
     void add() {
         final EOint left = new EOint(12L);
@@ -48,9 +46,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOsub}
-    * checks if subtraction is successful
-    */
+     * Test for {@code EOsub}
+     * checks if subtraction is successful
+     */
     @Test
     void sub() {
         final EOint left = new EOint(12L);
@@ -63,9 +61,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOdiv}
-    * checks if division is successful
-    */
+     * Test for {@code EOdiv}
+     * checks if division is successful
+     */
     @Test
     void div() {
         final EOint left = new EOint(12L);
@@ -78,9 +76,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOmul}
-    * checks if multiplication is successful
-    */
+     * Test for {@code EOmul}
+     * checks if multiplication is successful
+     */
     @Test
     void mul() {
         final EOint left = new EOint(12L);
@@ -93,9 +91,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOeq}
-    * checks equality (==)
-    */
+     * Test for {@code EOeq}
+     * checks equality (==)
+     */
     @Test
     void EOeq() {
         final EOint left = new EOint(12L);
@@ -109,9 +107,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOneq}
-    * checks equality (!=)
-    */
+     * Test for {@code EOneq}
+     * checks equality (!=)
+     */
     @Test
     void EOneq() {
         final EOint left = new EOint(12L);
@@ -125,9 +123,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOless}
-    * checks if the left side value is less than that of the right side
-    */
+     * Test for {@code EOless}
+     * checks if the left side value is less than that of the right side
+     */
     @Test
     void EOless() {
         final EOint left = new EOint(12L);
@@ -141,9 +139,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOless}
-    * checks if the left side value is less than or equal to that of the right side
-    */
+     * Test for {@code EOless}
+     * checks if the left side value is less than or equal to that of the right side
+     */
     @Test
     void EOleq() {
         final EOint left = new EOint(12L);
@@ -157,9 +155,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOgreater}
-    * checks if the left side value is greater than that of the right side
-    */
+     * Test for {@code EOgreater}
+     * checks if the left side value is greater than that of the right side
+     */
     @Test
     void EOgreater() {
         final EOint left = new EOint(12L);
@@ -173,9 +171,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOgeq}
-    * checks if the left side value is greater than or equal to that of the right side
-    */
+     * Test for {@code EOgeq}
+     * checks if the left side value is greater than or equal to that of the right side
+     */
     @Test
     void EOgeq() {
         final EOint left = new EOint(12L);
@@ -189,9 +187,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOneg}
-    * checks if the base value gets negated
-    */
+     * Test for {@code EOneg}
+     * checks if the base value gets negated
+     */
     @Test
     void EOneg() {
         final EOint base = new EOint(12L);
@@ -205,9 +203,9 @@ class EOintTest {
     }
 
     /***
-    * Test for {@code EOabs}
-    * checks if the base value is returned as a non-negative number
-    */
+     * Test for {@code EOabs}
+     * checks if the base value is returned as a non-negative number
+     */
     @Test
     void EOabs() {
         final EOint base = new EOint(-12L);
@@ -222,6 +220,7 @@ class EOintTest {
     /**
      * Tests for all three possibilities of {@code signum}
      * checks if the correct sign value is returned
+     *
      * @param number an integer representing the test value to apply {@code EOsignum} to
      */
     @ParameterizedTest(name = "{0}")
@@ -232,7 +231,7 @@ class EOintTest {
                 new EOint(
                         number
                 ).EOsignum()._getData().toInt(),
-                Matchers.equalTo((long)Math.signum(number))
+                Matchers.equalTo((long) Math.signum(number))
         );
     }
 
@@ -253,7 +252,7 @@ class EOintTest {
                                 exponent
                         )
                 )._getData().toInt(),
-                Matchers.equalTo((long)Math.pow(12, exponent))
+                Matchers.equalTo((long) Math.pow(12, exponent))
         );
 
     }

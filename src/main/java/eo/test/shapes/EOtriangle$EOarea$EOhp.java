@@ -18,8 +18,8 @@ public class EOtriangle$EOarea$EOhp extends EOObject {
     public EOData _getData() {
         EOObject per = new EODataObject(_getAttribute("perimeter")._getData());
         EOData res = new EOmul(
-                        per,
-                        new EODataObject(0.5)
+                per,
+                new EODataObject(0.5)
         )._setParent(this)._getData();
         return res;
     }

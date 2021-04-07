@@ -1,12 +1,12 @@
 import eo.test.EOCramers;
+import org.eolang.EOfloat;
 import org.eolang.core.EOObject;
 import org.eolang.core.data.EODataObject;
 import org.eolang.io.EOstdout;
 import org.eolang.txt.EOsprintf;
-import org.eolang.EOfloat;
 
 public class MainCramers {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 //        cramer's rule for solving 2 equations
 //        ax1 + ax2 = a;
 //        bx1 + bx2 = b
@@ -25,8 +25,8 @@ public class MainCramers {
                 new EOsprintf(
                         new EODataObject(
                                 "Example #1\n %s\n" +
-                                "Example #2\n %s\n" +
-                                "Example #3\n %s\n"),
+                                        "Example #2\n %s\n" +
+                                        "Example #3\n %s\n"),
                         new EOCramers(ax1, ax2, a, bx1, bx2, b),
                         new EOCramers(
                                 new EOfloat(3.0),

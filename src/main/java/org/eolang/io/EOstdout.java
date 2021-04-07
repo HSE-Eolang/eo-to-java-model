@@ -1,7 +1,7 @@
 package org.eolang.io;
 
-import org.eolang.core.data.EOData;
 import org.eolang.core.EOObject;
+import org.eolang.core.data.EOData;
 
 /**
  * Объект при датаризации выводит в стандартный поток вывода результат датаризации свободного атрибута out.
@@ -16,7 +16,7 @@ public class EOstdout extends EOObject {
      *
      * @param out the out
      */
-    public EOstdout(EOObject out){
+    public EOstdout(EOObject out) {
         this.out = out._setParent(this);
     }
 

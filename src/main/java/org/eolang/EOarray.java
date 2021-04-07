@@ -12,7 +12,7 @@ import org.eolang.core.data.EODataObject;
 public class EOarray extends EOObject {
     private final EOObjectArray array;
 
-    public EOarray(EOObjectArray array){
+    public EOarray(EOObjectArray array) {
         this.array = array;
     }
 
@@ -25,7 +25,7 @@ public class EOarray extends EOObject {
      * Determines if the base array is empty
      * @return A boolean object, true if empty and false if not empty
      */
-    public EObool EOisEmpty(){
+    public EObool EOisEmpty() {
         return new EObool(array.get_array().length == 0);
     }
 
@@ -33,7 +33,7 @@ public class EOarray extends EOObject {
      * Gets the length of the array
      * @return An object representing the length of the array
      */
-    public EOint EOlength(){
+    public EOint EOlength() {
         return new EOint(array.get_array().length);
     }
 
@@ -42,7 +42,7 @@ public class EOarray extends EOObject {
      * @param position an index of the array to fetch from
      * @return An object representing the value at the {@code position} free attribute index of the array
      */
-    public EOObject EOget(EOObject position){
+    public EOObject EOget(EOObject position) {
         return array.get_array()[position._getData().toInt().intValue()];
     }
 
@@ -51,9 +51,9 @@ public class EOarray extends EOObject {
      * @param eoObject An object to append to this array
      * @return An object representing the a new array with the appended object of the free attribute {@code eoObject}
      */
-    public EOObjectArray EOappend(EOObject eoObject){
+    public EOObjectArray EOappend(EOObject eoObject) {
         EOObject[] newArray = new EOObject[this.array.get_array().length + 1];
-        for (int i=0; i<this.array.get_array().length; i++) {
+        for (int i = 0; i < this.array.get_array().length; i++) {
             newArray[i] = this.array.get_array()[i];
         }
         newArray[this.array.get_array().length] = eoObject;
@@ -67,7 +67,7 @@ public class EOarray extends EOObject {
      * @param reducefunction represents the reduction function
      * @return
      */
-    public EOObject EOreduce(EOObject accumulator, EOObject reducefunction){
+    public EOObject EOreduce(EOObject accumulator, EOObject reducefunction) {
 //        TO DO
         return new EODataObject(0);
     }
@@ -77,7 +77,7 @@ public class EOarray extends EOObject {
      * @param falsy
      * @return
      */
-    public EObool EOeach(EObool falsy){
+    public EObool EOeach(EObool falsy) {
         for (EOObject eoObject : array.get_array()) {
 //            TO DO
         }
@@ -89,7 +89,7 @@ public class EOarray extends EOObject {
      * @param falsy
      * @return
      */
-    public EOObject EOmap(EObool falsy){
+    public EOObject EOmap(EObool falsy) {
 //        TO DO
         return new EODataObject(-1);
     }
@@ -99,7 +99,7 @@ public class EOarray extends EOObject {
      * @param falsy
      * @return
      */
-    public EOObject EOmapi(EObool falsy){
+    public EOObject EOmapi(EObool falsy) {
 //        To DO
         return new EODataObject(-1);
     }

@@ -1,9 +1,9 @@
-import java.io.File;
-
 import transpiler.medium2target.Medium2TargetTranspiler;
+import transpiler.mediumcodemodel.EOSourceEntity;
 import transpiler.mediumcodemodel.EOSourceFile;
 import transpiler.xml2medium.XML2MediumParser;
-import transpiler.mediumcodemodel.EOSourceEntity;
+
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) {

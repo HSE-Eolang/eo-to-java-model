@@ -11,7 +11,7 @@ import org.eolang.core.data.EOData;
 public class EOfloat extends EOObject {
     private final double value;
 
-    public EOfloat(double value){
+    public EOfloat(double value) {
         this.value = value;
     }
 
@@ -25,7 +25,7 @@ public class EOfloat extends EOObject {
      * @param rightAddend a number to be added to this float
      * @return An object representing the sum of this float and the {@code rightAddend} free attribute
      */
-    public EOfloat EOadd(EOObject rightAddend){
+    public EOfloat EOadd(EOObject rightAddend) {
         return new EOfloat(this.value + rightAddend._getData().toFloat());
     }
 
@@ -34,7 +34,7 @@ public class EOfloat extends EOObject {
      * @param subtrahend a number to be subtracted from this float
      * @return An object representing the difference between of this float and the {@code subtrahend} free attribute
      */
-    public EOfloat EOsub(EOObject subtrahend){
+    public EOfloat EOsub(EOObject subtrahend) {
         return new EOfloat(this.value - subtrahend._getData().toFloat());
     }
 
@@ -43,7 +43,7 @@ public class EOfloat extends EOObject {
      * @param divisor a number which divides this float
      * @return An object representing the quotient of this float divided by the {@code divisor} free attribute
      */
-    public EOfloat EOdiv(EOObject divisor){
+    public EOfloat EOdiv(EOObject divisor) {
         // TODO add check if divisor == 0 then return exception object
         return new EOfloat(this.value / divisor._getData().toFloat());
     }
@@ -53,7 +53,7 @@ public class EOfloat extends EOObject {
      * @param multiplier a number by which this float is to be multiplied
      * @return An object representing the product of this float and the {@code multiplier} free attribute
      */
-    public EOfloat EOmul(EOObject multiplier){
+    public EOfloat EOmul(EOObject multiplier) {
         return new EOfloat(this.value * multiplier._getData().toFloat());
     }
 
@@ -62,7 +62,7 @@ public class EOfloat extends EOObject {
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOeq(EOObject rightFloat){
+    public EObool EOeq(EOObject rightFloat) {
         return new EObool(this.value == rightFloat._getData().toFloat());
     }
 
@@ -71,7 +71,7 @@ public class EOfloat extends EOObject {
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOneq(EOObject rightFloat){
+    public EObool EOneq(EOObject rightFloat) {
         return new EObool(this.value != rightFloat._getData().toFloat());
     }
 
@@ -80,7 +80,7 @@ public class EOfloat extends EOObject {
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOless(EOObject rightFloat){
+    public EObool EOless(EOObject rightFloat) {
         return new EObool(this.value < rightFloat._getData().toFloat());
     }
 
@@ -89,7 +89,7 @@ public class EOfloat extends EOObject {
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOleq(EOObject rightFloat){
+    public EObool EOleq(EOObject rightFloat) {
         return new EObool(this.value <= rightFloat._getData().toFloat());
     }
 
@@ -98,7 +98,7 @@ public class EOfloat extends EOObject {
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOgreater(EOObject rightFloat){
+    public EObool EOgreater(EOObject rightFloat) {
         return new EObool(this.value > rightFloat._getData().toFloat());
     }
 
@@ -107,7 +107,7 @@ public class EOfloat extends EOObject {
      * @param  rightFloat a number to compare this float to
      * @return A boolean representing the truth value of the comparison of this float with the {@code rightFloat} free attribute
      */
-    public EObool EOgeq(EOObject rightFloat){
+    public EObool EOgeq(EOObject rightFloat) {
         return new EObool(this.value >= rightFloat._getData().toFloat());
     }
 
@@ -115,7 +115,7 @@ public class EOfloat extends EOObject {
      * Negates this float
      * @return A negative value of this float
      */
-    public EOfloat EOneg(){
+    public EOfloat EOneg() {
         return new EOfloat(-value);
     }
 
@@ -123,7 +123,7 @@ public class EOfloat extends EOObject {
      * Makes this float a non-negative value
      * @return An object representing the absolute value of this float
      */
-    public EOfloat EOabs(){
+    public EOfloat EOabs() {
         return new EOfloat(Math.abs(this.value));
     }
 
@@ -131,7 +131,7 @@ public class EOfloat extends EOObject {
      * Makes a Sign number of this float, thus, either -1.0, 0.0, or 1.0
      * @return An object representing the sign number value of this float
      */
-    public EOfloat EOsignum(){
+    public EOfloat EOsignum() {
         return new EOfloat(Math.signum(this.value));
     }
 
@@ -140,7 +140,7 @@ public class EOfloat extends EOObject {
      * @param exponent a number by which this float is to be multiplied the number of times
      * @return An object representing the  {@code exponent} free attribute)th power of this float
      */
-    public EOfloat EOpow(EOObject exponent){
+    public EOfloat EOpow(EOObject exponent) {
         return new EOfloat(Math.pow(this.value, exponent._getData().toFloat()));
     }
 

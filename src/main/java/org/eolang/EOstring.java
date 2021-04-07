@@ -10,7 +10,7 @@ import org.eolang.core.data.EOData;
 public class EOstring extends EOObject {
     private final String stringValue;
 
-    public EOstring(String stringValue){
+    public EOstring(String stringValue) {
         this.stringValue = stringValue;
     }
 
@@ -23,7 +23,7 @@ public class EOstring extends EOObject {
      * Trims this string on both sides
      * @return An object representing the trimmed value of this string
      */
-    public EOstring EOtrim(){
+    public EOstring EOtrim() {
         return new EOstring(stringValue.trim());
     }
 
@@ -31,7 +31,7 @@ public class EOstring extends EOObject {
      * Makes an integer type of this string
      * @return An object representing the integer value of this string
      */
-    public EOint EOtoInt(){
+    public EOint EOtoInt() {
         return new EOint(Long.parseLong(stringValue));
     }
 
@@ -40,7 +40,7 @@ public class EOstring extends EOObject {
      * @param rightString a string to compare with
      * @return An object representing the truth value of the comparison of this string with the {@code rightString} free attribute
      */
-    public EObool EOeq(EOObject rightString){
+    public EObool EOeq(EOObject rightString) {
         return new EObool(stringValue.equals(rightString._getData().toString()));
     }
 }

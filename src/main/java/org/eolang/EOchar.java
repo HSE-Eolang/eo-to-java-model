@@ -10,7 +10,7 @@ import org.eolang.core.data.EOData;
 public class EOchar extends EOObject {
     private char characterValue;
 
-    public EOchar(char characterValue){
+    public EOchar(char characterValue) {
         this.characterValue = characterValue;
     }
 

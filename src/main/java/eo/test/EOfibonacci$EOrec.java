@@ -4,9 +4,9 @@ import org.eolang.calc.EOadd;
 import org.eolang.calc.EOequal;
 import org.eolang.calc.EOif;
 import org.eolang.calc.EOsub;
+import org.eolang.core.EOObject;
 import org.eolang.core.data.EOData;
 import org.eolang.core.data.EODataObject;
-import org.eolang.core.EOObject;
 
 public class EOfibonacci$EOrec extends EOObject {
 

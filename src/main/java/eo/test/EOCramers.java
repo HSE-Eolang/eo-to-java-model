@@ -16,7 +16,7 @@ public class EOCramers extends EOObject {
     EOfloat bx2;
     EOfloat b;
 
-    public EOCramers(EOfloat ax1, EOfloat ax2, EOfloat a,EOfloat bx1, EOfloat bx2, EOfloat b){
+    public EOCramers(EOfloat ax1, EOfloat ax2, EOfloat a, EOfloat bx1, EOfloat bx2, EOfloat b) {
         this.ax1 = ax1;
         this.ax2 = ax2;
         this.a = a;

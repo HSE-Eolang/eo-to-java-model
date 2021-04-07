@@ -11,5 +11,8 @@ public abstract class EOMemoizedObject extends EOObject {
      * Кешированные данные
      */
     protected EOData _data;
-    public boolean _isCalculable(){return _data!=null;}
+
+    public boolean _isCalculable() {
+        return _data != null;
+    }
 }

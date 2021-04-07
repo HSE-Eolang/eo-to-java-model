@@ -1,14 +1,12 @@
 package org.eolang;
 
+import org.eolang.core.data.EODataObject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import org.eolang.core.data.EODataObject;
-
 /**
  * Test cases for {@link EOstring}
- *
  */
 class EOstringTest {
 
@@ -23,9 +21,9 @@ class EOstringTest {
     }
 
     /***
-    * Test for {@code EOtrim}
-    * checks if a string value with spaces on sides gets trimmed
-    */
+     * Test for {@code EOtrim}
+     * checks if a string value with spaces on sides gets trimmed
+     */
     @Test
     void EOtrim() {
         EOstring string = new EOstring(" Hello ");
@@ -36,9 +34,9 @@ class EOstringTest {
     }
 
     /***
-    *Test for {@code EOtoInt}
-    * checks if the int value of a string number is returned
-    */
+     *Test for {@code EOtoInt}
+     * checks if the int value of a string number is returned
+     */
     @Test
     void toInt() {
         EOstring string = new EOstring("12");
@@ -46,9 +44,9 @@ class EOstringTest {
     }
 
     /***
-    *Test for {@code EOeq}
-    * checks if the base string value is equal to another string
-    */
+     *Test for {@code EOeq}
+     * checks if the base string value is equal to another string
+     */
     @Test
     void EOeq() {
         EOstring string = new EOstring("Hello");
