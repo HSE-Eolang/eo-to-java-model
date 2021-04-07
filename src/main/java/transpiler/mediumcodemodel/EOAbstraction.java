@@ -207,7 +207,7 @@ public class EOAbstraction extends EOSourceEntity {
         }
 
         if (subAbstractions.size() > 0) {
-            transpileSubabstractions(w);
+            transpileSubAbstractions(w);
         }
     }
 
@@ -260,7 +260,7 @@ public class EOAbstraction extends EOSourceEntity {
     }
 
 
-    private void transpileSubabstractions(PicoWriter w) {
+    private void transpileSubAbstractions(PicoWriter w) {
         for (int i = 0; i < subAbstractions.size(); i++) {
             subAbstractions.get(i).transpile(w);
             w.writeln("");
