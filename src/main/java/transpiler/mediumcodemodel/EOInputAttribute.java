@@ -6,7 +6,6 @@ import org.eolang.core.EOObject;
 import transpiler.medium2target.TranslationCommons;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EOInputAttribute extends EOSourceEntity {
 
@@ -37,15 +36,15 @@ public class EOInputAttribute extends EOSourceEntity {
     }
 
     @Override
-    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter w) {
-        TranslationCommons.bigComment(w, "Field for storing the " + getDescription() + ".");
-        w.write("private final ");
+    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
+        TranslationCommons.bigComment(parentWriter, "Field for storing the " + getDescription() + ".");
+        parentWriter.write("private final ");
         if (isVararg) {
-            w.write(EOarray.class.getSimpleName());
+            parentWriter.write(EOarray.class.getSimpleName());
         } else {
-            w.write((EOObject.class.getSimpleName()));
+            parentWriter.write((EOObject.class.getSimpleName()));
         }
-        w.writeln(String.format(" %s;", targetName));
-        return Optional.empty();
+        parentWriter.writeln(String.format(" %s;", targetName));
+        return new ArrayList<>();
     }
 }

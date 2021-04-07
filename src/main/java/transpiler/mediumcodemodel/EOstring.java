@@ -3,7 +3,6 @@ package transpiler.mediumcodemodel;
 import org.ainslec.picocog.PicoWriter;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EOstring extends EOData {
     private final String value;
@@ -17,8 +16,8 @@ public class EOstring extends EOData {
     }
 
     @Override
-    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter parent) {
-        parent.write(String.format("new %s(\"%s\")", org.eolang.EOstring.class.getSimpleName(), this.value));
-        return Optional.empty();
+    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
+        parentWriter.write(String.format("new %s(\"%s\")", org.eolang.EOstring.class.getSimpleName(), this.value));
+        return new ArrayList<>();
     }
 }

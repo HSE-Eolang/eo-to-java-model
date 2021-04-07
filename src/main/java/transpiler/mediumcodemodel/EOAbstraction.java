@@ -71,11 +71,10 @@ public class EOAbstraction extends EOSourceEntity {
     private String getScopeType() {
         if (scope instanceof EOSourceFile) {
             return "package";
-        } else if (scope instanceof EOAbstraction){
+        } else if (scope instanceof EOAbstraction) {
             if (!instanceName.isPresent()) {
                 return "anonymous";
-            }
-            else {
+            } else {
                 return "attribute";
             }
         }
@@ -127,7 +126,7 @@ public class EOAbstraction extends EOSourceEntity {
     }
 
     @Override
-    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter parent) {
+    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
         if (getScopeType().equals("package")) {
             EOSourceFile file = ((EOSourceFile) scope);
             PicoWriter w = new PicoWriter();
@@ -137,13 +136,13 @@ public class EOAbstraction extends EOSourceEntity {
 
             ArrayList<EOTargetFile> result = new ArrayList<>();
             result.add(new EOTargetFile(String.format("%s.java", this.targetName.get()), w.toString()));
-            return Optional.of(result);
+            return result;
         } else if (getScopeType().equals("attribute")) {
-            transpileClass(parent);
-            return Optional.empty();
+            transpileClass(parentWriter);
+            return new ArrayList<>();
         } else {
-            transpileClassAnonymous(parent);
-            return Optional.empty();
+            transpileClassAnonymous(parentWriter);
+            return new ArrayList<>();
         }
     }
 
