@@ -72,7 +72,7 @@ public class EOAbstraction extends EOSourceEntity {
         if (scope instanceof EOSourceFile) {
             return "package";
         } else if (scope instanceof EOAbstraction) {
-            if (!instanceName.isPresent()) {
+            if (!instanceName.isPresent() || instanceName.get().equals("@")) {
                 return "anonymous";
             } else {
                 return "attribute";
@@ -101,14 +101,23 @@ public class EOAbstraction extends EOSourceEntity {
     }
 
     public String getArgsString() {
+        return getArgsString(true);
+    }
+    public String getArgsString(boolean useTypes) {
         String result = "";
         for (int i = 0; i < freeAttributes.size(); i++) {
             EOInputAttribute attr = freeAttributes.get(i);
-            String type = EOObject.class.getSimpleName();
+            String type = "";
+            if (useTypes) {
+                type = EOObject.class.getSimpleName();
+            }
             if (attr.isVararg()) {
                 type = type + "...";
             }
-            result += String.format("%s %s", type, attr.getTargetName());
+            if (useTypes) {
+                type += " ";
+            }
+            result += String.format("%s%s", type, attr.getTargetName());
             if (i != freeAttributes.size() - 1) {
                 result += ", ";
             }

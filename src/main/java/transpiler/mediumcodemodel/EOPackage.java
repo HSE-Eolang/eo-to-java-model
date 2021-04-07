@@ -29,7 +29,7 @@ public class EOPackage extends EOSourceEntity {
     }
 
     @Override
-    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
+    public ArrayList<EOTargetFile> transpile(PicoWriter w) {
         return new ArrayList<>();
     }
 }

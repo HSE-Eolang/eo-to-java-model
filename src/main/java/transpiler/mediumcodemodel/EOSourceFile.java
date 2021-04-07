@@ -34,7 +34,7 @@ public class EOSourceFile extends EOSourceEntity {
     }
 
     @Override
-    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
+    public ArrayList<EOTargetFile> transpile(PicoWriter w) {
         ArrayList<EOTargetFile> result = new ArrayList<>();
 
         for (int i = 0; i < objects.size(); i++) {
