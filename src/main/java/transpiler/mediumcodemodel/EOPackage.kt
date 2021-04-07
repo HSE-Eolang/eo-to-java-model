@@ -7,22 +7,12 @@ import java.util.ArrayList
  * Represents an EO source code package with a fully qualified name
  * @param packageName the fully qualified name of the package
  */
-class EOPackage(packageName: String) : EOSourceEntity() {
-
-    /***
-     * The fully qualified name of the package
-     */
-    val packageName: String
+class EOPackage(val packageName: String) : EOSourceEntity() {
 
     /***
      * Files that belong to the package
      */
     val files = ArrayList<EOSourceFile>()
-
-    init {
-        require(packageName.isNotEmpty()) { "Package name is not present" }
-        this.packageName = packageName
-    }
 
     /***
      * Add files that belong to the package
