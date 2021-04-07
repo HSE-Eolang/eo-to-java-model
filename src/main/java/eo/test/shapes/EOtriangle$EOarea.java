@@ -29,14 +29,14 @@ public class EOtriangle$EOarea extends EOObject {
                 _getAttribute("c")
         );
         EOData res = new EOpow(
+                new EOmul(
+                        hp,
                         new EOmul(
-                                hp,
-                                new EOmul(
-                                        a,
-                                        new EOmul(b, c)
-                                )
-                        ),
-                        new EODataObject(0.5)
+                                a,
+                                new EOmul(b, c)
+                        )
+                ),
+                new EODataObject(0.5)
         )._setParent(this)._getData();
         return res;
     }

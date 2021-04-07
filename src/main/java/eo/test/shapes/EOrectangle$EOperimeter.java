@@ -15,9 +15,9 @@ public class EOrectangle$EOperimeter extends EOObject {
     public EOData _getData() {
 
         EOData res = new EOmul(
-                        new EOadd(_getAttribute("a"),
-                                _getAttribute("b")),
-                        new EODataObject(2.0)
+                new EOadd(_getAttribute("a"),
+                        _getAttribute("b")),
+                new EODataObject(2.0)
         )._setParent(this)._getData();
         return res;
     }

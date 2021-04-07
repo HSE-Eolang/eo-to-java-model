@@ -22,15 +22,15 @@ class EOcharTest {
     }
 
     /***
-    * Test for {@code EOtoString}
-    * checks if a character is returned as a string
-    */
+     * Test for {@code EOtoString}
+     * checks if a character is returned as a string
+     */
     @Test
     void EOtoString() {
         final EOchar character = new EOchar('J');
         MatcherAssert.assertThat(
                 character.EOtoString()._getData().toString(),
                 Matchers.equalTo("J")
-                );
+        );
     }
 }

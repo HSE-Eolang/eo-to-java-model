@@ -12,8 +12,6 @@ public class EODataObject extends EOObject {
      */
     protected EOData _data;
 
-    public boolean _isCalculable(){return true;}
-
     public EODataObject(Object _data) {
         this._data = new EOData(_data);
     }
@@ -26,6 +24,10 @@ public class EODataObject extends EOObject {
         this._data = _data;
     }
 
+    public boolean _isCalculable() {
+        return true;
+    }
+
     /**
      * Датаризация объекта.
      */
@@ -33,15 +35,15 @@ public class EODataObject extends EOObject {
         return _data;
     }
 
-    public boolean isNoData(){
+    public boolean isNoData() {
         return _data.getClass().equals(EONoData.class);
     }
 
     public EOObject _clone() {
-        try{
-            EOObject res  = (EOObject)this.clone();
+        try {
+            EOObject res = (EOObject) this.clone();
             return res;
-        }catch (CloneNotSupportedException cnsException){
+        } catch (CloneNotSupportedException cnsException) {
             cnsException.printStackTrace();
         }
         return new EODataObject();

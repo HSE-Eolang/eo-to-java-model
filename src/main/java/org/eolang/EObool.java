@@ -12,7 +12,7 @@ public class EObool extends EOObject {
 
     private final Boolean baseBool;
 
-    public EObool(Boolean baseBool){
+    public EObool(Boolean baseBool) {
         this.baseBool = baseBool;
     }
 
@@ -27,10 +27,10 @@ public class EObool extends EOObject {
      * @param falseObject an object to be substituted with if this baseBool object is false.
      * @return An object being either the trueObject or the falseObject
      */
-    public EOObject EOif(EOObject trueObject, EOObject falseObject){
+    public EOObject EOif(EOObject trueObject, EOObject falseObject) {
         EOObject result;
 
-        if(this.baseBool){
+        if (this.baseBool) {
             result = trueObject;
         } else {
             result = falseObject;
@@ -42,7 +42,7 @@ public class EObool extends EOObject {
      *Inverts this bool
      * @return An object representing the inverse value of this bool
      */
-    public EObool EOnot(){
+    public EObool EOnot() {
         return new EObool(!this.baseBool);
     }
 
@@ -51,10 +51,10 @@ public class EObool extends EOObject {
      * @param eoObjects an array of objects
      * @return An object representing the logical AND of this baseBool object and all the objects passed to this method
      */
-    public EObool EOand(EOObject... eoObjects){
+    public EObool EOand(EOObject... eoObjects) {
         Boolean eoBool = this.baseBool;
-        for(EOObject eoObject: eoObjects ){
-            if(!eoBool){
+        for (EOObject eoObject : eoObjects) {
+            if (!eoBool) {
                 break;
             }
             eoBool &= eoObject._getData().toBoolean();
@@ -67,10 +67,10 @@ public class EObool extends EOObject {
      * @param eoObjects an array of objects
      * @return An object representing the logical OR of this baseBool object and all the objects passed to this method
      */
-    public EObool EOor(EOObject... eoObjects){
+    public EObool EOor(EOObject... eoObjects) {
         Boolean eoBool = this.baseBool;
-        for(EOObject eoObject: eoObjects ){
-            if(!eoBool){
+        for (EOObject eoObject : eoObjects) {
+            if (!eoBool) {
                 break;
             }
             eoBool |= eoObject._getData().toBoolean();
@@ -84,12 +84,12 @@ public class EObool extends EOObject {
      * @param falseObject a false bool object to evaluate with
      * @return An object representing the number of successful cycles
      */
-    public EOObject EOwhile(EOObject falseObject){
+    public EOObject EOwhile(EOObject falseObject) {
 //        TO DO
-        long count =  0L;
-        while(true){
+        long count = 0L;
+        while (true) {
             Boolean eoBool = this.baseBool;
-            if(!eoBool){
+            if (!eoBool) {
                 break;
             }
             EOObject eoObject = falseObject;

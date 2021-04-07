@@ -3,7 +3,6 @@ package transpiler.mediumcodemodel;
 import org.ainslec.picocog.PicoWriter;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EOSourceFile extends EOSourceEntity {
 
@@ -35,14 +34,14 @@ public class EOSourceFile extends EOSourceEntity {
     }
 
     @Override
-    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter parent) {
+    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
         ArrayList<EOTargetFile> result = new ArrayList<>();
 
         for (int i = 0; i < objects.size(); i++) {
             EOAbstraction abstraction = objects.get(i);
-            result.addAll(abstraction.transpile(null).get());
+            result.addAll(abstraction.transpile(null));
         }
 
-        return Optional.of(result);
+        return result;
     }
 }

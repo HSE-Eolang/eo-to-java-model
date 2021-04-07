@@ -1,8 +1,8 @@
-import org.eolang.core.data.EODataObject;
+import eo.test.EOfibonacci;
 import org.eolang.core.EOObject;
+import org.eolang.core.data.EODataObject;
 import org.eolang.io.EOstdout;
 import org.eolang.txt.EOsprintf;
-import eo.test.EOfibonacci;
 
 public class MainFibonacci {
     public static void main(String[] args) {

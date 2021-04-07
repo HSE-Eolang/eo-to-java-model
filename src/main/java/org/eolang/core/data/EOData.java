@@ -9,7 +9,7 @@ public class EOData {
      */
     private Object _data;
 
-    public EOData(Object _data){
+    public EOData(Object _data) {
         this._data = _data;
     }
 
@@ -18,19 +18,19 @@ public class EOData {
      */
     @Override
     public String toString() {
-        if(_data.getClass().equals(String.class)) {
-            return (String)_data;
+        if (_data.getClass().equals(String.class)) {
+            return (String) _data;
         }
-        if(_data.getClass().equals(Long.class)) {
+        if (_data.getClass().equals(Long.class)) {
             return _data.toString();
         }
-        if(_data.getClass().equals(Integer.class)) {
+        if (_data.getClass().equals(Integer.class)) {
             return _data.toString();
         }
-        if(_data.getClass().equals(Double.class)) {
+        if (_data.getClass().equals(Double.class)) {
             return _data.toString();
         }
-        if(_data.getClass().equals(Float.class)) {
+        if (_data.getClass().equals(Float.class)) {
             return _data.toString();
         }
         return "";
@@ -39,8 +39,8 @@ public class EOData {
     /**
      * @return a character value of the data, otherwise 0
      */
-    public Character toChar(){
-        if(_data.getClass().equals(Character.class)) {
+    public Character toChar() {
+        if (_data.getClass().equals(Character.class)) {
             return _data.toString().charAt(0);
         }
         return '0';
@@ -54,11 +54,11 @@ public class EOData {
      * Приведение типа данных к целому числу
      */
     public Long toInt() {
-        if(_data.getClass().equals(Long.class)){
-            return (Long)_data;
+        if (_data.getClass().equals(Long.class)) {
+            return (Long) _data;
         }
-        if(_data.getClass().equals(Integer.class) ){
-            return Long.valueOf((Integer)_data);
+        if (_data.getClass().equals(Integer.class)) {
+            return Long.valueOf((Integer) _data);
         }
         return 0L;
     }
@@ -67,11 +67,11 @@ public class EOData {
      * Приведение типа данных к дробному числу
      */
     public Double toFloat() {
-        if(_data.getClass().equals(Double.class)){
-            return (Double)_data;
+        if (_data.getClass().equals(Double.class)) {
+            return (Double) _data;
         }
-        if(_data.getClass().equals(Float.class) ){
-            return Double.valueOf((Float)_data);
+        if (_data.getClass().equals(Float.class)) {
+            return Double.valueOf((Float) _data);
         }
         return 0D;
     }
@@ -79,15 +79,15 @@ public class EOData {
     /**
      * Приведение типа данных к логическому значению
      */
-    public Boolean toBoolean(){
-        if(_data.getClass().equals(Boolean.class) ){
-            return (Boolean)_data;
+    public Boolean toBoolean() {
+        if (_data.getClass().equals(Boolean.class)) {
+            return (Boolean) _data;
         }
-        if(_data.getClass().equals(Long.class)){
-            return (Long)_data != 0L;
+        if (_data.getClass().equals(Long.class)) {
+            return (Long) _data != 0L;
         }
-        if(_data.getClass().equals(Integer.class) ){
-            return (Integer)_data != 0;
+        if (_data.getClass().equals(Integer.class)) {
+            return (Integer) _data != 0;
         }
 
         return false;

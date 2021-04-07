@@ -107,53 +107,53 @@ public class EOApplication extends EOSourceEntity {
     }
 
     @Override
-    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter w) {
+    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
         // unnamed applications (i.e. nested)
         if (!targetName.isPresent()) {
-            transpileApplication(w);
-            return Optional.empty();
+            transpileApplication(parentWriter);
+            return new ArrayList<>();
         }
         // decoratees
         if (name.get().equals("@")) {
-            w.writeln("@Override");
-            w.writeln_r(String.format("public %s _getDecoratedObject() {", EOObject.class.getSimpleName(), targetName.get()));
-            w.write("return ");
-            transpileApplication(w);
-            w.write(";");
-            w.writeln_l("}");
-            return Optional.empty();
+            parentWriter.writeln("@Override");
+            parentWriter.writeln_r(String.format("public %s _getDecoratedObject() {", EOObject.class.getSimpleName(), targetName.get()));
+            parentWriter.write("return ");
+            transpileApplication(parentWriter);
+            parentWriter.write(";");
+            parentWriter.writeln_l("}");
+            return new ArrayList<>();
         }
         // wrappers for abstraction
         if (wrappedAbstraction != null) {
-            w.writeln_r(String.format("public %s %s(%s) {", EOObject.class.getSimpleName(), targetName.get(), wrappedAbstraction.getArgsString()));
+            parentWriter.writeln_r(String.format("public %s %s(%s) {", EOObject.class.getSimpleName(), targetName.get(), wrappedAbstraction.getArgsString()));
             // wrapper for anonymous abstraction
             if (!wrappedAbstraction.getTargetName().isPresent()) {
-                w.write("return ");
-                wrappedAbstraction.transpile(w);
-                w.write(";");
+                parentWriter.write("return ");
+                wrappedAbstraction.transpile(parentWriter);
+                parentWriter.write(";");
             }
             // wrapper for named abstraction
             else {
-                w.write(String.format("return new %s(", wrappedAbstraction.getTargetName().get()));
+                parentWriter.write(String.format("return new %s(", wrappedAbstraction.getTargetName().get()));
                 for (int i = 0; i < wrappedAbstraction.getFreeAttributes().size(); i++) {
                     EOInputAttribute inp = wrappedAbstraction.getFreeAttributes().get(i);
-                    w.write(inp.getTargetName());
+                    parentWriter.write(inp.getTargetName());
                     if (i != wrappedAbstraction.getFreeAttributes().size() - 1) {
-                        w.write(", ");
+                        parentWriter.write(", ");
                     }
                 }
-                w.write(");");
+                parentWriter.write(");");
             }
-            w.writeln_l("}");
-            return Optional.empty();
+            parentWriter.writeln_l("}");
+            return new ArrayList<>();
         }
         // plain application-based bound attribute
-        w.writeln_r(String.format("public %s %s() {", EOObject.class.getSimpleName(), targetName.get()));
-        w.write("return ");
-        transpileApplication(w);
-        w.write(";");
-        w.writeln_l("}");
-        return Optional.empty();
+        parentWriter.writeln_r(String.format("public %s %s() {", EOObject.class.getSimpleName(), targetName.get()));
+        parentWriter.write("return ");
+        transpileApplication(parentWriter);
+        parentWriter.write(";");
+        parentWriter.writeln_l("}");
+        return new ArrayList<>();
     }
 
     private void transpileApplication(PicoWriter w) {
@@ -185,11 +185,10 @@ public class EOApplication extends EOSourceEntity {
             }
             w.write(")");
         } else {
-            if(appliedObject.equals("^")) {
+            if (appliedObject.equals("^")) {
                 w.write("_getParentObject()");
                 return;
-            }
-            else {
+            } else {
                 w.write("new ");
                 w.write(aliasToNormalForm());
                 w.write("(");
@@ -211,7 +210,7 @@ public class EOApplication extends EOSourceEntity {
                 }
             }
             arg.transpileApplication(w);
-            if (i != arguments.size() - 1){
+            if (i != arguments.size() - 1) {
                 w.write(", ");
             }
         }

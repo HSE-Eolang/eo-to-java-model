@@ -1,8 +1,8 @@
+import eo.test.EOFactorial;
 import org.eolang.core.EOObject;
 import org.eolang.core.data.EODataObject;
 import org.eolang.io.EOstdout;
 import org.eolang.txt.EOsprintf;
-import eo.test.EOFactorial;
 
 public class MainFactorial {
     public static void main(String[] args) {

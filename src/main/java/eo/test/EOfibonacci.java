@@ -1,14 +1,15 @@
 package eo.test;
 
-import org.eolang.calc.*;
+import org.eolang.calc.EOif;
+import org.eolang.calc.EOless;
+import org.eolang.core.EOObject;
 import org.eolang.core.data.EOData;
 import org.eolang.core.data.EODataObject;
-import org.eolang.core.EOObject;
 
-public class EOfibonacci extends EOObject{
+public class EOfibonacci extends EOObject {
     private EOObject n;
 
-    public EOfibonacci(EOObject n){
+    public EOfibonacci(EOObject n) {
         this.n = n._setParent(this);
     }
 

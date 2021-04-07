@@ -13,9 +13,9 @@ public class EOtriangle$EOperimeter extends EOObject {
     public EOData _getData() {
 
         EOData res = new EOadd(
-                        new EOadd(_getAttribute("a"),
-                                _getAttribute("b")),
-                        _getAttribute("c")
+                new EOadd(_getAttribute("a"),
+                        _getAttribute("b")),
+                _getAttribute("c")
         )._setParent(this)._getData();
         return res;
     }

@@ -3,7 +3,6 @@ package transpiler.mediumcodemodel;
 import org.ainslec.picocog.PicoWriter;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EOPackage extends EOSourceEntity {
 
@@ -30,7 +29,7 @@ public class EOPackage extends EOSourceEntity {
     }
 
     @Override
-    public Optional<ArrayList<EOTargetFile>> transpile(PicoWriter parent) {
-        return null;
+    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
+        return new ArrayList<>();
     }
 }

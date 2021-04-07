@@ -46,13 +46,13 @@ public class EOint extends EOObject {
     public EOint EOmul(EOObject rightFactor) {
         return new EOint(this.value * rightFactor._getData().toInt());
     }
-    
+
     /***
      * Checks if this int is equal to the {@code rightInt} free attribute
      * @param  rightInt a number to compare this int to
      * @return A boolean representing the truth value of the comparison of this int with the {@code rightInt} free attribute
      */
-    public EObool EOeq(EOObject rightInt){
+    public EObool EOeq(EOObject rightInt) {
         return new EObool(this.value == rightInt._getData().toInt());
     }
 
@@ -61,7 +61,7 @@ public class EOint extends EOObject {
      * @param  rightInt a number to compare this int to
      * @return A boolean representing the truth value of the comparison of this int with the {@code rightInt} free attribute
      */
-    public EObool EOneq(EOObject rightInt){
+    public EObool EOneq(EOObject rightInt) {
         return new EObool(this.value != rightInt._getData().toInt());
     }
 
@@ -70,7 +70,7 @@ public class EOint extends EOObject {
      * @param  rightInt a number to compare this int to
      * @return A boolean representing the truth value of the comparison of this int with the {@code rightInt} free attribute
      */
-    public EObool EOless(EOObject rightInt){
+    public EObool EOless(EOObject rightInt) {
         return new EObool(this.value < rightInt._getData().toInt());
     }
 
@@ -79,7 +79,7 @@ public class EOint extends EOObject {
      * @param  rightInt a number to compare this int to
      * @return A boolean representing the truth value of the comparison of this int with the {@code rightInt} free attribute
      */
-    public EObool EOleq(EOObject rightInt){
+    public EObool EOleq(EOObject rightInt) {
         return new EObool(this.value <= rightInt._getData().toInt());
     }
 
@@ -88,7 +88,7 @@ public class EOint extends EOObject {
      * @param  rightInt a number to compare this int to
      * @return A boolean representing the truth value of the comparison of this int with the {@code rightInt} free attribute
      */
-    public EObool EOgreater(EOObject rightInt){
+    public EObool EOgreater(EOObject rightInt) {
         return new EObool(this.value > rightInt._getData().toInt());
     }
 
@@ -97,7 +97,7 @@ public class EOint extends EOObject {
      * @param  rightInt a number to compare this int to
      * @return A boolean representing the truth value of the comparison of this int with the {@code rightInt} free attribute
      */
-    public EObool EOgeq(EOObject rightInt){
+    public EObool EOgeq(EOObject rightInt) {
         return new EObool(this.value >= rightInt._getData().toInt());
     }
 
@@ -105,7 +105,7 @@ public class EOint extends EOObject {
      * Negates this int
      * @return A negative value of this int
      */
-    public EOint EOneg(){
+    public EOint EOneg() {
         return new EOint(-value);
     }
 
@@ -113,7 +113,7 @@ public class EOint extends EOObject {
      * Makes this int a non-negative value
      * @return An object representing the absolute value of this int
      */
-    public EOint EOabs(){
+    public EOint EOabs() {
         return new EOint(Math.abs(this.value));
     }
 
@@ -121,7 +121,7 @@ public class EOint extends EOObject {
      * Makes a Sign number of this int, thus, either -1.0, 0.0, or 1.0
      * @return An object representing the sign number value of this int
      */
-    public EOint EOsignum(){
+    public EOint EOsignum() {
         return new EOint((long) Math.signum(this.value));
     }
 
@@ -130,7 +130,7 @@ public class EOint extends EOObject {
      * @param exponent a number by which this int is to be multiplied the number of times
      * @return An object representing the  ({@code exponent} free attribute)th power of this int
      */
-    public EOint EOpow(EOObject exponent){
+    public EOint EOpow(EOObject exponent) {
         return new EOint((long) Math.pow(this.value, exponent._getData().toInt()));
     }
 
@@ -139,7 +139,7 @@ public class EOint extends EOObject {
      * @param divisor a number by which this int is to be divided
      * @return An object representing the remainder of the division by  ({@code divisor} free attribute)
      */
-    public EOint EOmod(EOObject divisor){
+    public EOint EOmod(EOObject divisor) {
         return new EOint((long) Math.floorMod(this.value, divisor._getData().toInt()));
     }
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * Basic EO object. Based on this class, classes are created for creating user objects.
  */
-public abstract class EOObject implements Cloneable{
+public abstract class EOObject implements Cloneable {
     /**
      * Link to the parent of the object
      */
@@ -20,9 +20,12 @@ public abstract class EOObject implements Cloneable{
     /**
      * Checking if an object can be datarized when creating a datarized object for caching.
      * A variant of solving the problem of exponential growth of datarization time during recursion.
+     *
      * @return the boolean
      */
-    public boolean _isCalculable(){return false;}
+    public boolean _isCalculable() {
+        return false;
+    }
 
     public Optional<EOObject> _getDecoratedObject() {
         return Optional.empty();
@@ -38,8 +41,8 @@ public abstract class EOObject implements Cloneable{
      * @param _parent The parent object
      * @return this
      */
-    public EOObject _setParent(EOObject _parent){
-        if(this._parent == null)
+    public EOObject _setParent(EOObject _parent) {
+        if (this._parent == null)
             this._parent = _parent;
         return this;
     }
@@ -49,9 +52,9 @@ public abstract class EOObject implements Cloneable{
      *
      * @return Data
      */
-    public EOData _getData(){
+    public EOData _getData() {
         Optional<EOObject> decoratee = _getDecoratedObject();
-        if(!decoratee.isPresent()) {
+        if (!decoratee.isPresent()) {
             throw new RuntimeException("Object cannot be dataized.");
         }
         return decoratee.get()._getData();
@@ -92,13 +95,13 @@ public abstract class EOObject implements Cloneable{
      * Copying an attribute of an object by name with the installation of free attributes
      *
      * @param name Object name
-     * @Param freeAtt Available attributes
      * @return Object Attribute
+     * @Param freeAtt Available attributes
      */
     public EOObject _getAttribute(String name, EOObject freeAtt) {
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod("EO"+ name, EOObject.class);
+            Method method = this.getClass().getDeclaredMethod("EO" + name, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt);
         } catch ( NoSuchMethodException e) {
@@ -110,19 +113,18 @@ public abstract class EOObject implements Cloneable{
         return res;
     }
 
-    public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2){
+    public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2) {
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod("EO"+ name, EOObject.class, EOObject.class);
+            Method method = this.getClass().getDeclaredMethod("EO" + name, EOObject.class, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt1, freeAtt2);
-        } catch ( NoSuchMethodException e) {
+        } catch (NoSuchMethodException e) {
             System.out.println("attribute \"" + name + "\" not found");
             e.printStackTrace();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        return res;
     }
 
 }
