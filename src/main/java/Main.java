@@ -8,6 +8,7 @@ import transpiler.mediumcodemodel.EOSourceEntity;
 public class Main {
     public static void main(String[] args) {
         File file = new File("/home/nlchar/eo-to-java-model/src/main/java/app.eo.xml");
+//        File file = new File("src/main/java/app.eo.xml");
         XML2MediumParser xml = new XML2MediumParser(file);
         try {
             EOSourceEntity smth = xml.parse();
