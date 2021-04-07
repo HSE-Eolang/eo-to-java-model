@@ -23,12 +23,12 @@ public class EOfibonacci$EOrec extends EOObject {
     @Override
     public EOData _getData() {
         EOData res = new EOif(
-                new EOequal(_getAttribute("n"), new EODataObject(3)),
-                new EOadd(_getAttribute("minus1"), _getAttribute("minus2")),
-                _getAttribute("rec",
-                        new EOsub(_getAttribute("n"), new EODataObject(1)),
-                        new EOadd(_getAttribute("minus1"), _getAttribute("minus2")),
-                        _getAttribute("minus1")
+                new EOequal(n, new EODataObject(3)),
+                new EOadd(minus1, minus2),
+                new EOfibonacci$EOrec(
+                        new EOsub(n, new EODataObject(1)),
+                        new EOadd(minus1, minus2),
+                        minus1
                 )
         )._setParent(this)._getData();
         return res;

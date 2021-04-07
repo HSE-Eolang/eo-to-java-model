@@ -15,17 +15,14 @@ public class EOfibonacci extends EOObject{
     @Override
     public EOData _getData() {
         EOData res = new EOif(
-                new EOless(_getAttribute("n"), new EODataObject(3)),
-                _getAttribute("small",
-                        _getAttribute("n")
-                ),
-                _getAttribute("rec",
-                        _getAttribute("n"),
+                new EOless(n, new EODataObject(3)),
+                new EOfibonacci$EOsmall(n),
+                new EOfibonacci$EOrec(
+                        n,
                         new EODataObject(1L),
                         new EODataObject(1L)
                 )
         )._setParent(this)._getData();
-        //_freeAttributes();
         return res;
     }
 

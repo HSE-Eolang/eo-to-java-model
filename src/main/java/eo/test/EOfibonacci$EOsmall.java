@@ -17,13 +17,12 @@ public class EOfibonacci$EOsmall extends EOObject {
     public EOData _getData() {
         EOData res = new EOif(
                 new EOequal(
-                        _getAttribute("n"),
+                        n,
                         new EODataObject(2)
                 ),
                 new EODataObject(1L),
-                _getAttribute("n")
+                n
         )._setParent(this)._getData();
-        //_freeAttributes();
         return res;
     }
 }
