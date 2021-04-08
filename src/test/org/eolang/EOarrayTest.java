@@ -1,6 +1,5 @@
 package org.eolang;
 
-import org.eolang.core.EOObjectArray;
 import org.eolang.core.data.EODataObject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -16,16 +15,17 @@ class EOarrayTest {
      * Checks if the data is returned
      */
     @Test
-    void _getData() {
-        EOarray array = new EOarray(new EOObjectArray(
+    void getArray() {
+        EOarray array = new EOarray(
                 new EODataObject(1),
                 new EODataObject(3),
                 new EODataObject(5),
                 new EODataObject(7),
                 new EODataObject(9)
-        ));
-//        TO DO
-//        EOObjectArray returns only the last element of the array
+        );
+        EOarray eOarray = array;
+        MatcherAssert.assertThat(eOarray.EOlength()._getData().toInt(),
+                Matchers.equalTo(5L));
     }
 
     /***
@@ -34,7 +34,7 @@ class EOarrayTest {
      */
     @Test
     void isEmpty() {
-        EOarray array = new EOarray(new EOObjectArray());
+        EOarray array = new EOarray();
         MatcherAssert.assertThat(
                 array.EOisEmpty()._getData().toBoolean(),
                 Matchers.equalTo(true)
@@ -48,13 +48,13 @@ class EOarrayTest {
      */
     @Test
     void length() {
-        EOarray array = new EOarray(new EOObjectArray(
+        EOarray array = new EOarray(
                 new EODataObject(1),
                 new EODataObject(3),
                 new EODataObject(5),
                 new EODataObject(7),
                 new EODataObject(9)
-        ));
+        );
         MatcherAssert.assertThat(
                 array.EOlength()._getData().toInt(),
                 Matchers.equalTo(5L)
@@ -67,13 +67,13 @@ class EOarrayTest {
      */
     @Test
     void get() {
-        EOarray array = new EOarray(new EOObjectArray(
+        EOarray array = new EOarray(
                 new EODataObject(1),
                 new EODataObject(3),
                 new EODataObject(5),
                 new EODataObject(7),
                 new EODataObject(9)
-        ));
+        );
         MatcherAssert.assertThat(
                 array.EOget(
                         new EODataObject(2))._getData().toInt(),
@@ -87,16 +87,14 @@ class EOarrayTest {
      */
     @Test
     void append() {
-        EOarray array = new EOarray(new EOObjectArray(
+        EOarray array = new EOarray(
                 new EODataObject(1),
                 new EODataObject(3),
                 new EODataObject(5),
                 new EODataObject(7),
                 new EODataObject(9)
-        ));
-        EOarray appendedArray = new EOarray(
-                array.EOappend(new EODataObject(10))
         );
+        EOarray appendedArray = array.EOappend(new EODataObject(10));
         MatcherAssert.assertThat(
                 appendedArray.EOget(new EODataObject(5))._getData().toInt(),
                 Matchers.equalTo(10L)
