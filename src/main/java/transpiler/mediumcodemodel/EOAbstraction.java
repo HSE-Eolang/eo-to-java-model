@@ -1,5 +1,7 @@
 package transpiler.mediumcodemodel;
 
+import com.google.googlejavaformat.java.Formatter;
+import com.google.googlejavaformat.java.FormatterException;
 import org.ainslec.picocog.PicoWriter;
 import org.eolang.EOarray;
 import org.eolang.core.EOObject;
@@ -144,7 +146,14 @@ public class EOAbstraction extends EOSourceEntity {
             transpileClass(w);
 
             ArrayList<EOTargetFile> result = new ArrayList<>();
-            result.add(new EOTargetFile(String.format("%s.java", this.targetName.get()), w.toString()));
+            String formattedJava;
+            try {
+                formattedJava = new Formatter().formatSource(w.toString());
+            } catch (FormatterException e) {
+                throw new RuntimeException("Can't format the output");
+            }
+
+            result.add(new EOTargetFile(String.format("%s.java", this.targetName.get()), formattedJava));
             return result;
         } else if (getScopeType().equals("attribute")) {
             transpileClass(parentWriter);
@@ -155,6 +164,9 @@ public class EOAbstraction extends EOSourceEntity {
         }
     }
 
+    /***
+     * Transpiles the header of the target Java file (i.e. package and import statements)
+     */
     private void transpileFileHeader(PicoWriter w, EOSourceFile file) {
         /* package statement */
         w.writeln(String.format("package %s;", file.getEoPackage().getPackageName()));
@@ -169,9 +181,11 @@ public class EOAbstraction extends EOSourceEntity {
         if (getScopeType().equals("package")) {
             TranslationCommons.bigComment(w, String.format("Package-scope object '%s'.", this.instanceName.get()));
             w.writeln_r(String.format("public class %s extends %s {", this.targetName.get(), EOObject.class.getSimpleName()));
-        } else {
+        } else if (getScopeType().equals("attribute")) {
             TranslationCommons.bigComment(w, (getNestedChain() + ".").replaceFirst("a", "A").split("\n"));
             w.writeln_r(String.format("private class %s extends %s {", this.targetName.get(), EOObject.class.getSimpleName()));
+        }
+        else {
 
         }
         transpileClassContents(w);
@@ -191,32 +205,21 @@ public class EOAbstraction extends EOSourceEntity {
             w.writeln("");
             transpileFreeAttributes(w);
         }
-        w.writeln("");
-        if (getTargetName().isPresent()) {
+
+        if (!getScopeType().equals("anonymous")) {
+            w.writeln("");
             transpileConstructor(w);
             w.writeln("");
         }
-
-        if (getScopeType().equals("attribute")) {
-            transpileParent(w);
-        }
-        w.writeln("");
-
+        transpileParentObject(w);
+        transpileDecoratee(w);
+        transpileFreeAttrsGetters(w);
         if (boundAttributes.size() > 0) {
             transpileApplications(w);
         }
-
         if (subAbstractions.size() > 0) {
             transpileSubAbstractions(w);
         }
-    }
-
-    private void transpileParent(PicoWriter w) {
-        EOAbstraction scope = (EOAbstraction) getScope();
-        w.writeln("@Override");
-        w.writeln_r(String.format("public %s _getParentObject() {", EOObject.class.getSimpleName()));
-        w.writeln(String.format("return %s.this;", scope.targetName.get()));
-        w.writeln_l("}");
     }
 
     private void transpileFreeAttributes(PicoWriter w) {
@@ -227,10 +230,13 @@ public class EOAbstraction extends EOSourceEntity {
 
     private void transpileConstructor(PicoWriter w) {
         ArrayList<String> commentParams = new ArrayList<>();
-        if (getScopeType().equals("package")) {
-            commentParams.add(String.format("Constructs (via one-time-full application) the package-scope object '%s'.", this.instanceName.get()));
-        } else {
-            commentParams.addAll(Arrays.asList(String.format("Constructs (via one-time-full application) the %s.", getNestedChain()).split("\n")));
+        switch (getScopeType()) {
+            case "package":
+                commentParams.add(String.format("Constructs (via one-time-full application) the package-scope object '%s'.", this.instanceName.get()));
+                break;
+            case "attribute":
+                commentParams.addAll(Arrays.asList(String.format("Constructs (via one-time-full application) the %s.", getNestedChain()).split("\n")));
+                break;
         }
         if (freeAttributes.size() > 0) {
             for (int i = 0; i < freeAttributes.size(); i++) {
@@ -256,6 +262,43 @@ public class EOAbstraction extends EOSourceEntity {
                 w.writeln(String.format("this.%s = %s;", attr.getTargetName(), wrapper));
             }
             w.writeln_l("}");
+        }
+    }
+
+    private void transpileFreeAttrsGetters(PicoWriter w) {
+        if (freeAttributes.size() > 0) {
+            for (int i = 0; i < freeAttributes.size(); i++) {
+                EOInputAttribute attr = freeAttributes.get(i);
+                String type = attr.isVararg() ? EOarray.class.getSimpleName() : EOObject.class.getSimpleName();
+                TranslationCommons.bigComment(w, String.format("Returns the object bound to the `%s` input attribute.", attr.getName()));
+                w.writeln_r(String.format("public %s %s() {", type, attr.getTargetName()));
+                w.writeln(String.format("return this.%s;", attr.getTargetName()));
+                w.writeln_l("}");
+                w.writeln("");
+            }
+        }
+    }
+
+    private void transpileParentObject(PicoWriter w) {
+        if (getScopeType().equals("attribute")) {
+            EOAbstraction scope = (EOAbstraction) getScope();
+            TranslationCommons.bigComment(w, String.format("Returns the parent object '%s' of this object", scope.getInstanceName().get()));
+            w.writeln("@Override");
+            w.writeln_r(String.format("public %s _getParentObject() {", EOObject.class.getSimpleName()));
+            w.writeln(String.format("return %s.this;", scope.targetName.get()));
+            w.writeln_l("}");
+            w.writeln("");
+        }
+    }
+
+    private void transpileDecoratee(PicoWriter w) {
+        Optional<EOApplication> decoratee = boundAttributes.stream().filter(o -> o.getName().orElse("").equals("@")).findFirst();
+        if (decoratee.isPresent()) {
+            TranslationCommons.bigComment(w, "The decoratee of this object.");
+            decoratee.get().transpile(w);
+            // remove it to avoid double transpilation
+            boundAttributes.remove(decoratee.get());
+            w.writeln("");
         }
     }
 

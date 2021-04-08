@@ -13,7 +13,7 @@ class EOSourceFile(val fileName: String, val eoPackage: EOPackage) : EOSourceEnt
     /***
      * Package-scoped objects that belong to the source file
      */
-    private var objects: ArrayList<EOAbstraction> = ArrayList()
+    val objects: ArrayList<EOAbstraction> = ArrayList()
 
     /***
      * Adds package-scoped objects that belong to the source file

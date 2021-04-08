@@ -1,4 +1,4 @@
-import eo.test.newModel.EOapp;
+import sandbox.EOapp;
 
 public class MainApp {
     public static void main(String[] args) {

@@ -2,6 +2,8 @@ package transpiler.mediumcodemodel;
 
 import org.ainslec.picocog.PicoWriter;
 import org.eolang.core.EOObject;
+import transpiler.medium2target.TranslationCommons;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -142,6 +144,35 @@ public class EOApplication extends EOSourceEntity {
         return result;
     }
 
+    private String getCorrectReference() {
+        if (appliedObject.contains(".")) {
+            // some outer object with a fully qualified name
+            return String.format("new %s", aliasToNormalForm());
+        }
+
+        EOAbstraction abstractionScope = (EOAbstraction) scope;
+        Optional<EOInputAttribute> attr = abstractionScope.getFreeAttributes().stream().filter(a -> a.getName().equals(appliedObject)).findAny();
+        if (attr.isPresent()) {
+            return String.format("this.%s", attr.get().getTargetName());
+        }
+        Optional<EOApplication> application = abstractionScope.getBoundAttributes().stream().filter(a -> a.getName().orElse("").equals(appliedObject)).findAny();
+        if (application.isPresent()) {
+            return String.format("this.%s", application.get().targetName.get());
+        }
+
+        if(!(abstractionScope.getScope() instanceof EOSourceFile)) {
+            throw new RuntimeException(String.format("Cannot find referenced %s.", appliedObject));
+        }
+
+        EOSourceFile eoSourceFileScope = (EOSourceFile) abstractionScope.getScope();
+        for (EOAbstraction abstraction: eoSourceFileScope.getObjects()) {
+            if (abstraction.getInstanceName().orElse("").equals(appliedObject)) {
+                return String.format("new %s", abstraction.getTargetName().get());
+            }
+        }
+        throw new RuntimeException(String.format("Cannot find referenced %s.", appliedObject));
+    }
+
     @Override
     public String toString() {
         if (name.isPresent()) {
@@ -184,6 +215,9 @@ public class EOApplication extends EOSourceEntity {
 
         if (wrappedAbstraction != null) {
             // abstraction-based bound attribute
+            if (!name.get().equals("@")){
+                TranslationCommons.bigComment(w, String.format("Abstraction-based bound attribute object '%s'", this.name.get()));
+            }
             w.writeln_r(String.format("public %s %s(%s) {", EOObject.class.getSimpleName(), methodName, wrappedAbstraction.getArgsString()));
             if (wrappedAbstraction.getInstanceName().get().equals("@")) {
                 // anonymous-abstraction based decoratee (special case)
@@ -199,6 +233,9 @@ public class EOApplication extends EOSourceEntity {
         }
         else {
             // application based bound attribute
+            if (!name.get().equals("@")){
+                TranslationCommons.bigComment(w, String.format("Application-based bound attribute object '%s'", this.name.get()));
+            }
             w.writeln_r(String.format("public %s %s() {", EOObject.class.getSimpleName(), methodName));
             w.write("return ");
             transpileApplication(w);
@@ -216,42 +253,38 @@ public class EOApplication extends EOSourceEntity {
         // dot-notation based application
         if (isDotNotation) {
             transpileDotNotationApplication(w);
+            return;
         }
-        // non-nested plain application
-        if (isAccessible(appliedObject) != null) {
-            // that cannot be referenced
-            w.writeln(appliedObject);
-            w.write("(");
-            if (arguments.size() > 0) {
-                transpileArgs(w);
-            }
-            w.write(")");
-        } else {
-            if (appliedObject.equals("^")) {
-                w.write("_getParentObject()");
-                return;
-            } else {
-                w.write("new ");
-                w.write(aliasToNormalForm());
-                w.write("(");
-                if (arguments.size() > 0) {
-                    transpileArgs(w);
-                }
-                w.write(")");
-            }
+        // parent access
+        if (appliedObject.equals("^")) {
+            w.write("_getParentObject()");
+            return;
         }
+        // plain application
+        w.write(getCorrectReference());
+        w.write("(");
+        if (arguments.size() > 0) {
+            transpileArgs(w);
+        }
+        w.write(")");
     }
+
 
     private void transpileDotNotationApplication(PicoWriter w) {
         w.write("(");
         getDotNotationBase().transpileApplication(w);
-        w.write(")._getAttribute(");
-        w.write(String.format("\"EO%s\"", appliedObject));
-        if (arguments.size() > 0) {
-            w.write(", ");
-            transpileArgs(w);
+        if (appliedObject.equals("^")) {
+            w.write(")._getParentObject()");
         }
-        w.write(")");
+        else {
+            w.write(")._getAttribute(");
+            w.write(String.format("\"EO%s\"", appliedObject));
+            if (arguments.size() > 0) {
+                w.write(", ");
+                transpileArgs(w);
+            }
+            w.write(")");
+        }
     }
 
     private void transpileArgs(PicoWriter w) {
@@ -269,5 +302,4 @@ public class EOApplication extends EOSourceEntity {
             }
         }
     }
-
 }

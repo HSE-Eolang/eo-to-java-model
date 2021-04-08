@@ -91,9 +91,14 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
+            <artifactId>kotlin-test-junit</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.googlejavaformat</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>1.10.0</version>
         </dependency>
 
     </dependencies>

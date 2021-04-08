@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<program ms="273"
+<program ms="237"
          name="app.eo"
-         time="2021-04-05T02:29:40.228370Z"
+         time="2021-04-08T01:27:27.205819Z"
          version="0.1.25">
     <listing>+package sandbox
         +alias stdout org.eolang.io.stdout
@@ -35,8 +35,7 @@
         rec1.perimeter &gt; per
         rec1.perimeter.halfPerimeterAbstr
         per.halfPerimeterApplic
-        &lt;EOF&gt;
-    </listing>
+        &lt;EOF&gt;</listing>
     <errors/>
     <sheets>
         <sheet>not-empty-atoms</sheet>
@@ -225,9 +224,7 @@
             </o>
             <o base="org.eolang.io.stdout" line="24" name="@">
                 <o base="org.eolang.txt.sprintf" line="25">
-                    <o base="org.eolang.string" data="string" line="26">side a:%d\nside b:%d\narea: %d\nperimeter:
-                        %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n
-                    </o>
+                    <o base="org.eolang.string" data="string" line="26">side a:%d\nside b:%d\narea: %d\nperimeter: %d\nhalfPerimAbst: %d\nhalfPerimApplic: %d\n</o>
                     <o base=".a" line="27" method="">
                         <o base="rec1" line="27" ref="20"/>
                     </o>
