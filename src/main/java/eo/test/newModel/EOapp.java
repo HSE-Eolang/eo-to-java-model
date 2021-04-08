@@ -31,7 +31,7 @@ public class EOapp extends EOObject {
      * Input variable-length attribute 'args'
      * @return object bound to the input variable-length attribute 'args'
      */
-    public EOObject EOargs() {
+    public EOarray EOargs() {
         return this.args;
     }
 
