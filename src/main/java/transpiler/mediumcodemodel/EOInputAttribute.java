@@ -36,15 +36,15 @@ public class EOInputAttribute extends EOSourceEntity {
     }
 
     @Override
-    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
-        TranslationCommons.bigComment(parentWriter, "Field for storing the " + getDescription() + ".");
-        parentWriter.write("private final ");
+    public ArrayList<EOTargetFile> transpile(PicoWriter w) {
+        TranslationCommons.bigComment(w, "Field for storing the " + getDescription() + ".");
+        w.write("private final ");
         if (isVararg) {
-            parentWriter.write(EOarray.class.getSimpleName());
+            w.write(EOarray.class.getSimpleName());
         } else {
-            parentWriter.write((EOObject.class.getSimpleName()));
+            w.write((EOObject.class.getSimpleName()));
         }
-        parentWriter.writeln(String.format(" %s;", targetName));
+        w.writeln(String.format(" %s;", targetName));
         return new ArrayList<>();
     }
 }

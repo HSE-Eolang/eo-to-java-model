@@ -3,7 +3,7 @@ package org.eolang;
 import org.eolang.core.data.EODataObject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test cases for {@link EOstring}

@@ -5,7 +5,7 @@ import org.eolang.core.data.EODataObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Optional;
+import java.util.Arrays;
 
 
 /**
@@ -27,12 +27,12 @@ public abstract class EOObject implements Cloneable {
         return false;
     }
 
-    public Optional<EOObject> _getDecoratedObject() {
-        return Optional.empty();
+    public EOObject _getDecoratedObject() {
+        return null;
     }
 
-    public Optional<EOObject> _getParentObject() {
-        return Optional.empty();
+    public EOObject _getParentObject() {
+        return null;
     }
 
     /**
@@ -53,11 +53,11 @@ public abstract class EOObject implements Cloneable {
      * @return Data
      */
     public EOData _getData() {
-        Optional<EOObject> decoratee = _getDecoratedObject();
-        if (!decoratee.isPresent()) {
+        EOObject decoratee = _getDecoratedObject();
+        if (decoratee == null) {
             throw new RuntimeException("Object cannot be dataized.");
         }
-        return decoratee.get()._getData();
+        return decoratee._getData();
     }
 
     /**
@@ -79,11 +79,14 @@ public abstract class EOObject implements Cloneable {
     public EOObject _getAttribute(String name){
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod("EO"+ name);
+            System.out.println(Arrays.toString(this.getClass().getDeclaredMethods()));
+            Method method = this.getClass().getDeclaredMethod(name);
+//            System.out.println("name: " + name);
+//            System.out.println("method: " + method);
             method.setAccessible(true);
             return (EOObject)method.invoke(this);
         } catch ( NoSuchMethodException e) {
-            System.out.println("attribute \"" + name + "\" not found");
+//            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
             e.printStackTrace();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -101,12 +104,11 @@ public abstract class EOObject implements Cloneable {
     public EOObject _getAttribute(String name, EOObject freeAtt) {
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod("EO" + name, EOObject.class);
+            Method method = this.getClass().getDeclaredMethod( name, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt);
         } catch ( NoSuchMethodException e) {
-            System.out.println("attribute \"" + name + "\" not found");
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -120,12 +122,24 @@ public abstract class EOObject implements Cloneable {
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt1, freeAtt2);
         } catch (NoSuchMethodException e) {
-            System.out.println("attribute \"" + name + "\" not found");
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return res;
     }
 
+    public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2, EOObject freeAtt3) {
+        EOObject res = new EODataObject();
+        try {
+            Method method = this.getClass().getDeclaredMethod("EO" + name, EOObject.class, EOObject.class, EOObject.class);
+            method.setAccessible(true);
+            return (EOObject) method.invoke(this, freeAtt1, freeAtt2, freeAtt3);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 }

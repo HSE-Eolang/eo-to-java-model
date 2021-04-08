@@ -2,21 +2,68 @@ package transpiler.mediumcodemodel;
 
 import org.ainslec.picocog.PicoWriter;
 import org.eolang.core.EOObject;
+import transpiler.medium2target.TranslationCommons;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+/***
+ * Represents the medium code model for the application operation
+ */
 public class EOApplication extends EOSourceEntity {
 
-    private final boolean isDotNotation;
+    /***
+     * The name of the object being applied
+     */
     private final String appliedObject;
-    private final Optional<String> name;
-    private final Optional<String> targetName;
-    private EOSourceEntity scope;
-    private EOApplication dotNotationBase;
-    private EOAbstraction wrappedAbstraction;
+
+    /***
+     * Arguments of the application (i.e., objects that are passed into the applied object)
+     * May be absent
+     */
     private ArrayList<EOApplication> arguments;
-    private Optional<EOData> data = Optional.empty();
+
+    /***
+     * The scope in which the application is performed
+     * Typically, the scope is the nearest abstraction that the application belongs to
+     */
+    private EOSourceEntity scope;
+
+    /***
+     * The name of the application in the EO source code (may be absent)
+     */
+    private final Optional<String> name;
+
+    /***
+     * The name of the application in the target Java source code (may be absent)
+     */
+    private final Optional<String> targetName;
+
+    /***
+     * If the application is a wrapper for some abstraction, the abstraction is stored here
+     */
+    private EOAbstraction wrappedAbstraction;
+
+    /***
+     * If the application copies standard data type object (like int or string) the data and its type are stored here
+     */
+    private Optional<EOData> data;
+
+    /***
+     * Does the application refer to
+     * the {@code appliedObject} as an attribute
+     * of the {@code dotNotationBase} object?
+     */
+    private final boolean isDotNotation;
+
+    /***
+     * The base object where the dot-notation based application accesses its attribute {@code appliedObject}
+     * May be absent if the application is plain (i.e., not dot-notation based)
+     */
+    private EOApplication dotNotationBase;
+
+
+
 
     public EOApplication(boolean isDotNotation, String appliedObject, Optional<String> name, Optional<EOData> data) {
         this.isDotNotation = isDotNotation;
@@ -97,6 +144,35 @@ public class EOApplication extends EOSourceEntity {
         return result;
     }
 
+    private String getCorrectReference() {
+        if (appliedObject.contains(".")) {
+            // some outer object with a fully qualified name
+            return String.format("new %s", aliasToNormalForm());
+        }
+
+        EOAbstraction abstractionScope = (EOAbstraction) scope;
+        Optional<EOInputAttribute> attr = abstractionScope.getFreeAttributes().stream().filter(a -> a.getName().equals(appliedObject)).findAny();
+        if (attr.isPresent()) {
+            return String.format("this.%s", attr.get().getTargetName());
+        }
+        Optional<EOApplication> application = abstractionScope.getBoundAttributes().stream().filter(a -> a.getName().orElse("").equals(appliedObject)).findAny();
+        if (application.isPresent()) {
+            return String.format("this.%s", application.get().targetName.get());
+        }
+
+        if(!(abstractionScope.getScope() instanceof EOSourceFile)) {
+            throw new RuntimeException(String.format("Cannot find referenced %s.", appliedObject));
+        }
+
+        EOSourceFile eoSourceFileScope = (EOSourceFile) abstractionScope.getScope();
+        for (EOAbstraction abstraction: eoSourceFileScope.getObjects()) {
+            if (abstraction.getInstanceName().orElse("").equals(appliedObject)) {
+                return String.format("new %s", abstraction.getTargetName().get());
+            }
+        }
+        throw new RuntimeException(String.format("Cannot find referenced %s.", appliedObject));
+    }
+
     @Override
     public String toString() {
         if (name.isPresent()) {
@@ -106,54 +182,66 @@ public class EOApplication extends EOSourceEntity {
         }
     }
 
+    /***
+     * Transpiles higher level applications
+     * (i.e., transpiles proper wrappers for them and delegates the rest to a recursive method)
+     */
     @Override
-    public ArrayList<EOTargetFile> transpile(PicoWriter parentWriter) {
-        // unnamed applications (i.e. nested)
+    public ArrayList<EOTargetFile> transpile(PicoWriter w) {
         if (!targetName.isPresent()) {
-            transpileApplication(parentWriter);
-            return new ArrayList<>();
+            // unnamed applications (i.e. nested)
+            // these do not need any wrapping methods for them
+            transpileApplication(w);
         }
-        // decoratees
-        if (name.get().equals("@")) {
-            parentWriter.writeln("@Override");
-            parentWriter.writeln_r(String.format("public %s _getDecoratedObject() {", EOObject.class.getSimpleName(), targetName.get()));
-            parentWriter.write("return ");
-            transpileApplication(parentWriter);
-            parentWriter.write(";");
-            parentWriter.writeln_l("}");
-            return new ArrayList<>();
+        else {
+            // bound attribute
+            transpileWrapperForBoundAttribute(w);
         }
-        // wrappers for abstraction
-        if (wrappedAbstraction != null) {
-            parentWriter.writeln_r(String.format("public %s %s(%s) {", EOObject.class.getSimpleName(), targetName.get(), wrappedAbstraction.getArgsString()));
-            // wrapper for anonymous abstraction
-            if (!wrappedAbstraction.getTargetName().isPresent()) {
-                parentWriter.write("return ");
-                wrappedAbstraction.transpile(parentWriter);
-                parentWriter.write(";");
-            }
-            // wrapper for named abstraction
-            else {
-                parentWriter.write(String.format("return new %s(", wrappedAbstraction.getTargetName().get()));
-                for (int i = 0; i < wrappedAbstraction.getFreeAttributes().size(); i++) {
-                    EOInputAttribute inp = wrappedAbstraction.getFreeAttributes().get(i);
-                    parentWriter.write(inp.getTargetName());
-                    if (i != wrappedAbstraction.getFreeAttributes().size() - 1) {
-                        parentWriter.write(", ");
-                    }
-                }
-                parentWriter.write(");");
-            }
-            parentWriter.writeln_l("}");
-            return new ArrayList<>();
-        }
-        // plain application-based bound attribute
-        parentWriter.writeln_r(String.format("public %s %s() {", EOObject.class.getSimpleName(), targetName.get()));
-        parentWriter.write("return ");
-        transpileApplication(parentWriter);
-        parentWriter.write(";");
-        parentWriter.writeln_l("}");
         return new ArrayList<>();
+    }
+
+    // transpiles to a Java method
+    private void transpileWrapperForBoundAttribute(PicoWriter w) {
+        String methodName;
+        if (name.get().equals("@")) {
+            // decoration
+            w.writeln("@Override");
+            methodName = "_getDecoratedObject";
+        }
+        else {
+            // bound attribute of some type
+            methodName = targetName.get();
+        }
+
+        if (wrappedAbstraction != null) {
+            // abstraction-based bound attribute
+            if (!name.get().equals("@")){
+                TranslationCommons.bigComment(w, String.format("Abstraction-based bound attribute object '%s'", this.name.get()));
+            }
+            w.writeln_r(String.format("public %s %s(%s) {", EOObject.class.getSimpleName(), methodName, wrappedAbstraction.getArgsString()));
+            if (wrappedAbstraction.getInstanceName().get().equals("@")) {
+                // anonymous-abstraction based decoratee (special case)
+                w.write("return ");
+                wrappedAbstraction.transpile(w);
+                w.write(";");
+                w.writeln_l("}");
+            }
+            else {
+                w.write(String.format("return new %s(%s);", wrappedAbstraction.getTargetName().get(), wrappedAbstraction.getArgsString(false)));
+                w.writeln_l("}");
+            }
+        }
+        else {
+            // application based bound attribute
+            if (!name.get().equals("@")){
+                TranslationCommons.bigComment(w, String.format("Application-based bound attribute object '%s'", this.name.get()));
+            }
+            w.writeln_r(String.format("public %s %s() {", EOObject.class.getSimpleName(), methodName));
+            w.write("return ");
+            transpileApplication(w);
+            w.writeln(";");
+            w.writeln_l("}");
+        }
     }
 
     private void transpileApplication(PicoWriter w) {
@@ -164,39 +252,38 @@ public class EOApplication extends EOSourceEntity {
         }
         // dot-notation based application
         if (isDotNotation) {
-            w.write("(");
-            getDotNotationBase().transpileApplication(w);
+            transpileDotNotationApplication(w);
+            return;
+        }
+        // parent access
+        if (appliedObject.equals("^")) {
+            w.write("_getParentObject()");
+            return;
+        }
+        // plain application
+        w.write(getCorrectReference());
+        w.write("(");
+        if (arguments.size() > 0) {
+            transpileArgs(w);
+        }
+        w.write(")");
+    }
+
+
+    private void transpileDotNotationApplication(PicoWriter w) {
+        w.write("(");
+        getDotNotationBase().transpileApplication(w);
+        if (appliedObject.equals("^")) {
+            w.write(")._getParentObject()");
+        }
+        else {
             w.write(")._getAttribute(");
-            w.write(appliedObject);
+            w.write(String.format("\"EO%s\"", appliedObject));
             if (arguments.size() > 0) {
                 w.write(", ");
                 transpileArgs(w);
             }
             w.write(")");
-            return;
-        }
-        // non-nested plain application
-        if (isAccessible(appliedObject) != null) {
-            // that cannot be referenced
-            w.writeln(appliedObject);
-            w.write("(");
-            if (arguments.size() > 0) {
-                transpileArgs(w);
-            }
-            w.write(")");
-        } else {
-            if (appliedObject.equals("^")) {
-                w.write("_getParentObject()");
-                return;
-            } else {
-                w.write("new ");
-                w.write(aliasToNormalForm());
-                w.write("(");
-                if (arguments.size() > 0) {
-                    transpileArgs(w);
-                }
-                w.write(")");
-            }
         }
     }
 
@@ -214,9 +301,5 @@ public class EOApplication extends EOSourceEntity {
                 w.write(", ");
             }
         }
-    }
-
-    private Optional<ArrayList<EOTargetFile>> transpileDecoration(PicoWriter w) {
-        return Optional.empty();
     }
 }
