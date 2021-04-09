@@ -10,7 +10,7 @@ public class MainMain {
     private final PrintStream stdout;
 
     /**
-     * Ctor.
+     * Constructor
      * @param out The output
      */
     public MainMain(final PrintStream out) {
@@ -18,7 +18,7 @@ public class MainMain {
     }
 
     /**
-     * The method caled by JVM when the program starts.
+     * The method called by JVM when the program starts.
      * @param args Command line args
      * @throws Exception If fails
      */
@@ -37,13 +37,11 @@ public class MainMain {
             return;
         }
         final String path = args[0].replaceAll("([^.]+)$", "EO$1");
-        EOObject app = EOObject.class.cast(
-                Class.forName(path).getConstructor().newInstance()
-        );
+        EOObject app = (EOObject) Class.forName(path).getConstructor().newInstance();
         for (int i = 1; i < args.length; ++i) {
             // To Do
-            final EOObject phi = new EOstring(args[i]);
-            app = phi;
+            final EOObject eoString = new EOstring(args[i]);
+            app = eoString;
         }
         if (!app._getData().toBoolean()) {
             throw new IllegalStateException(
@@ -53,7 +51,7 @@ public class MainMain {
     }
 
     /**
-     * Read the version from resources and prints it.
+     * Reads the version from resources and prints it.
      * @throws IOException If fails
      */
     private void version() throws IOException {
@@ -64,10 +62,12 @@ public class MainMain {
                                      StandardCharsets.UTF_8)
                      )
         ) {
-            this.stdout.printf(
-                    "EOLANG Runtime v.%s",
-                    input.lines().findFirst().get()
-            );
+            if(input.lines().findFirst().isPresent()){
+                this.stdout.printf(
+                        "Eolang Runtime v.%s",
+                        input.lines().findFirst().get()
+                );
+            }
         }
     }
 }
