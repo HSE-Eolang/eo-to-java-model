@@ -78,12 +78,12 @@ public abstract class EOObject implements Cloneable {
     public EOObject _getAttribute(String name){
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod(name);
+            Method method = this.getClass().getDeclaredMethod("EO"+name);
             method.setAccessible(true);
             return (EOObject)method.invoke(this);
         } catch ( NoSuchMethodException e) {
-//            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
+//            e.printStackTrace();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -100,12 +100,12 @@ public abstract class EOObject implements Cloneable {
     public EOObject _getAttribute(String name, EOObject freeAtt) {
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod( name, EOObject.class);
+            Method method = this.getClass().getDeclaredMethod( "EO"+name, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt);
         } catch ( NoSuchMethodException e) {
-//            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
+//            e.printStackTrace();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -115,12 +115,12 @@ public abstract class EOObject implements Cloneable {
     public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2) {
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod(name, EOObject.class, EOObject.class);
+            Method method = this.getClass().getDeclaredMethod("EO"+name, EOObject.class, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt1, freeAtt2);
         } catch (NoSuchMethodException e) {
-//            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
+//            e.printStackTrace();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -130,12 +130,12 @@ public abstract class EOObject implements Cloneable {
     public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2, EOObject freeAtt3) {
         EOObject res = new EODataObject();
         try {
-            Method method = this.getClass().getDeclaredMethod(name, EOObject.class, EOObject.class, EOObject.class);
+            Method method = this.getClass().getDeclaredMethod("EO"+name, EOObject.class, EOObject.class, EOObject.class);
             method.setAccessible(true);
             return (EOObject) method.invoke(this, freeAtt1, freeAtt2, freeAtt3);
         } catch (NoSuchMethodException e) {
-//            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
+//            e.printStackTrace();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
