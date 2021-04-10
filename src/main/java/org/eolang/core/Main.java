@@ -1,19 +1,29 @@
+package org.eolang.core;
+
 import org.eolang.EOstring;
-import org.eolang.core.EOObject;
+import org.eolang.core.data.EODataObject;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-
-public class MainMain {
+public class Main {
     private final PrintStream stdout;
 
     /**
      * Constructor
      * @param out The output
      */
-    public MainMain(final PrintStream out) {
+    public Main(final PrintStream out) {
         this.stdout = out;
     }
 
@@ -23,7 +33,7 @@ public class MainMain {
      * @throws Exception If fails
      */
     public static void main(final String... args) throws Exception {
-        new MainMain(System.out).exec(args);
+        new Main(System.out).exec(args);
     }
 
     /**
@@ -37,17 +47,21 @@ public class MainMain {
             return;
         }
         final String path = args[0].replaceAll("([^.]+)$", "EO$1");
-        EOObject app = (EOObject) Class.forName(path).getConstructor().newInstance();
-        for (int i = 1; i < args.length; ++i) {
-            // To Do
-            final EOObject eoString = new EOstring(args[i]);
-            app = eoString;
+        Constructor<?> appConstructor = Arrays.stream(Class.forName(path).getConstructors())
+                .findFirst().get();
+        Parameter[] appParams = appConstructor.getParameters();
+        List<Object> appValues = new ArrayList<Object>();
+        for(int i=0; i<appParams.length; i++){
+            if(appParams[i].getType().getCanonicalName().endsWith("[]")){
+                List<EOstring> objs = Arrays.stream(args).skip(i+1).map(arg -> new EOstring(arg)).collect(Collectors.toList());
+                appValues.add(objs.toArray(new EOstring[0]));
+            }else{
+                Object obj = new EODataObject(args[i+1]);
+                appValues.add(obj);
+            }
         }
-        if (!app._getData().toBoolean()) {
-            throw new IllegalStateException(
-                    "Runtime dataization failure"
-            );
-        }
+        EOObject app = (EOObject)appConstructor.newInstance(appValues.toArray());
+        System.out.println(app._getData().toString());
     }
 
     /**
@@ -58,7 +72,7 @@ public class MainMain {
         try (BufferedReader input =
                      new BufferedReader(
                              new InputStreamReader(//${project.version}
-                                     Objects.requireNonNull(MainMain.class.getResourceAsStream("version.txt")),
+                                     Objects.requireNonNull(Main.class.getResourceAsStream("version.txt")),
                                      StandardCharsets.UTF_8)
                      )
         ) {
