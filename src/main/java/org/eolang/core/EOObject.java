@@ -141,4 +141,19 @@ public abstract class EOObject implements Cloneable {
         }
         return res;
     }
+
+    public EOObject _getAttribute(String name, EOObject freeAtt1, EOObject freeAtt2, EOObject freeAtt3, EOObject freeAtt4) {
+        EOObject res = new EODataObject();
+        try {
+            Method method = this.getClass().getDeclaredMethod("EO"+name, EOObject.class, EOObject.class, EOObject.class, EOObject.class);
+            method.setAccessible(true);
+            return (EOObject) method.invoke(this, freeAtt1, freeAtt2, freeAtt3);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(String.format("Can't access the %s attribute of the %s object", name, this.getClass().getName()));
+//            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 }
