@@ -1,8 +1,12 @@
 package org.eolang;
 
+import org.eolang.core.data.EODataObject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test cases for {@link EOfloat}
@@ -14,10 +18,10 @@ class EOfloatTest {
      * Checks if the data is returned
      */
     @Test
-//    @DisplayName("Test Dataization")
+    @DisplayName("Test Dataization")
     void _getData() {
         final EOfloat left = new EOfloat(12);
-        MatcherAssert.assertThat(left._getData().toFloat(), Matchers.equalTo(12));
+        MatcherAssert.assertThat(left._getData().toFloat(), Matchers.equalTo(12.0));
     }
 
     /***
@@ -208,36 +212,36 @@ class EOfloatTest {
      *
      * @param number an integer representing the test value to apply {@code EOsignum} to
      */
-//    @ParameterizedTest(name = "{0}")
-//    @ValueSource(doubles = {-23.0, 0.0, 7.0})
-//    @DisplayName("Test signum")
-//    void EOsignum(double number) {
-//        MatcherAssert.assertThat(
-//                new EOfloat(
-//                        number
-//                ).EOsignum()._getData().toFloat(),
-//                Matchers.equalTo(Math.signum(number))
-//        );
-//    }
-//
-//    /***
-//     * Test for {@EOpow}
-//     * checks if a number raised to a power is correctly evaluated
-//     * @param exponent An integer representing the exponent
-//     */
-//    @ParameterizedTest(name = "{0}")
-//    @ValueSource(doubles = {0.0, 1.0, 2.0, 3.0})
-//    @DisplayName("Test powers")
-//    void EOpow(double exponent) {
-//        MatcherAssert.assertThat(
-//                new EOfloat(
-//                        12.0
-//                ).EOpow(
-//                        new EODataObject(
-//                                exponent
-//                        )
-//                )._getData().toFloat(),
-//                Matchers.equalTo(Math.pow(12.0, exponent))
-//        );
-//    }
+    @ParameterizedTest(name = "{0}")
+    @ValueSource(doubles = {-23.0, 0.0, 7.0})
+    @DisplayName("Test signum")
+    void EOsignum(double number) {
+        MatcherAssert.assertThat(
+                new EOfloat(
+                        number
+                ).EOsignum()._getData().toFloat(),
+                Matchers.equalTo(Math.signum(number))
+        );
+    }
+
+    /***
+     * Test for {@code EOpow}
+     * checks if a number raised to a power is correctly evaluated
+     * @param exponent An integer representing the exponent
+     */
+    @ParameterizedTest(name = "{0}")
+    @ValueSource(doubles = {-1.0, 0.0, 1.0, 2.0, 3.0})
+    @DisplayName("Test powers")
+    void EOpow(double exponent) {
+        MatcherAssert.assertThat(
+                new EOfloat(
+                        0.0
+                ).EOpow(
+                        new EODataObject(
+                                exponent
+                        )
+                )._getData().toFloat(),
+                Matchers.equalTo(Math.pow(0.0, exponent))
+        );
+    }
 }
