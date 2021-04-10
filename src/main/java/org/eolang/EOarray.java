@@ -40,6 +40,14 @@ public class EOarray {
      * @return An object representing the value at the {@code position} free attribute index of the array
      */
     public EOObject EOget(EOObject position) {
+        if (_array.length <= position._getData().toInt().intValue()) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Can't get() the %dth element of the array, there are just %d of them",
+                            position._getData().toInt().intValue(), _array.length
+                    )
+            );
+        }
         return _array[position._getData().toInt().intValue()];
     }
 
