@@ -64,52 +64,31 @@ public class EOarray {
     }
 
     /***
-     * TO DO
-     * Performs the reduction operation of its base array object
-     * @param accumulator a partial result
+     * Performs the reduction operation of the base array object
+     * @param accumulator a partial/subtotal result
      * @param reduceFunction represents the reduction function
-     * @return
+     * @return An object representing the final accumulated value of the reduce operation
      */
     public EOObject EOreduce(EOObject accumulator, EOObject reduceFunction) {
-//        TO DO
         EOObject out = accumulator;
         for (EOObject eoObject: this._array) {
-            
+            out = reduceFunction._getAttribute("reduce", out, eoObject);
         }
         return out;
     }
 
     /***
-     * To Do
-     * @param falsy
-     * @return
+     * Performs a map operation on the base array object
+     * @param mapFunction represents the map function
+     * @return An {@code EOarray} object containing mapped elements
      */
-    public EObool EOeach(EObool falsy) {
-        for (EOObject eoObject : _array) {
-//            TO DO
+    public EOarray EOmap(EOObject mapFunction) {
+        int length = this._array.length;
+        EOObject[] mappedArray = new EOObject[length];
+        for (int i=0;i<length;i++) {
+            mappedArray[i] = mapFunction._getAttribute("map", _array[i]);
         }
-        return new EObool(true);
+        return new EOarray(mappedArray);
     }
-
-    /***
-     * TO Do
-     * @param falsy
-     * @return
-     */
-    public EOObject EOmap(EObool falsy) {
-//        TO DO
-        return new EODataObject(-1);
-    }
-
-    /***
-     * TO DO
-     * @param falsy
-     * @return
-     */
-    public EOObject EOmapi(EObool falsy) {
-//        To DO
-        return new EODataObject(-1);
-    }
-
 
 }
