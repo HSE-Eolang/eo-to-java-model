@@ -264,4 +264,12 @@ class EOintTest {
                 Matchers.equalTo(2L)
         );
     }
+
+    @Test
+    void EOtoEOfloat() {
+        final EOint left = new EOint(2L);
+        final EOfloat floatValue = left.EOtoEOfloat();
+
+        MatcherAssert.assertThat(floatValue._getData().toFloat(), Matchers.equalTo(2.0));
+    }
 }

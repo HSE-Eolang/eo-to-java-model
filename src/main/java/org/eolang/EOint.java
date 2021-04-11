@@ -145,4 +145,8 @@ public class EOint extends EOObject {
         return new EOint(Math.floorMod(this.value, divisor._getData().toInt()));
     }
 
+    public EOfloat EOtoEOfloat(){
+        return new EOfloat((double)this.value);
+    }
+
 }
