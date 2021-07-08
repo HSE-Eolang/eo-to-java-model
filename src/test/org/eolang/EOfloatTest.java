@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
  * Test cases for {@link EOfloat}
  */
@@ -23,7 +21,7 @@ class EOfloatTest {
     @DisplayName("Test Dataization")
     void _getData() {
         final EOfloat left = new EOfloat(12);
-        assertEquals(left._getData().toFloat(), 12);
+        MatcherAssert.assertThat(left._getData().toFloat(), Matchers.equalTo(12.0));
     }
 
     /***
@@ -227,23 +225,23 @@ class EOfloatTest {
     }
 
     /***
-     * Test for {@EOpow}
+     * Test for {@code EOpow}
      * checks if a number raised to a power is correctly evaluated
      * @param exponent An integer representing the exponent
      */
     @ParameterizedTest(name = "{0}")
-    @ValueSource(doubles = {0.0, 1.0, 2.0, 3.0})
+    @ValueSource(doubles = {-1.0, 0.0, 1.0, 2.0, 3.0})
     @DisplayName("Test powers")
     void EOpow(double exponent) {
         MatcherAssert.assertThat(
                 new EOfloat(
-                        12.0
+                        0.0
                 ).EOpow(
                         new EODataObject(
                                 exponent
                         )
                 )._getData().toFloat(),
-                Matchers.equalTo(Math.pow(12.0, exponent))
+                Matchers.equalTo(Math.pow(0.0, exponent))
         );
     }
 }

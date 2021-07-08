@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
  * Test cases for {@link EOint}
  */
@@ -23,7 +21,7 @@ class EOintTest {
     @DisplayName("Test Dataization")
     void _getData() {
         final EOint left = new EOint(12L);
-        assertEquals(left._getData().toInt(), 12L);
+        MatcherAssert.assertThat(left._getData().toInt(), Matchers.equalTo(12L));
     }
 
     /***
@@ -34,11 +32,6 @@ class EOintTest {
     void add() {
         final EOint left = new EOint(12L);
         final EOint right = new EOint(8L);
-//        Immutability
-//        left.add(right);
-//        assertEquals(12, left._getData().toInt());
-
-//        Addition
         MatcherAssert.assertThat(
                 left.EOadd(right)._getData().toInt(),
                 Matchers.equalTo(20L)
@@ -236,63 +229,26 @@ class EOintTest {
     }
 
     /***
-     * Test for {@EOpow}
+     * Test for {@code EOpow}
      * checks if a number raised to a power is correctly evaluated
      * @param exponent An integer representing the exponent
      */
     @ParameterizedTest(name = "{0}")
-    @ValueSource(ints = {0, 1, 2, 3})
+    @ValueSource(ints = {-1, 0, 1, 2, 3})
     @DisplayName("Test powers")
     void EOpow(int exponent) {
-        MatcherAssert.assertThat(
-                new EOint(
-                        12L
-                ).EOpow(
-                        new EODataObject(
-                                exponent
-                        )
-                )._getData().toInt(),
-                Matchers.equalTo((long) Math.pow(12, exponent))
-        );
-
-    }
-
-    /***
-     * Tests Zero to the power Zero
-     * checks if a number raised to the power 0 returns 1
-     */
-    @Test
-    void zeroToZeroPower() {
         MatcherAssert.assertThat(
                 new EOint(
                         0L
                 ).EOpow(
                         new EODataObject(
-                                0
+                                exponent
                         )
                 )._getData().toInt(),
-                Matchers.equalTo(1L)
+                Matchers.equalTo((long) Math.pow(0, exponent))
         );
 
     }
-
-    /***
-     * Tests zero to the power of a negative number
-     */
-//    @Test
-//    void zeroToNegative() {
-//        MatcherAssert.assertThat(
-//                new EOint(
-//                        0L
-//                ).EOpow(
-//                        new EODataObject(
-//                                -1
-//                        )
-//                )._getData().toInt(),
-//                Matchers.equalTo((int) Math.pow(0, -1))
-//        );
-//
-//    }
 
     /***
      * Test for {@code EOmod}
@@ -307,5 +263,13 @@ class EOintTest {
                 modulo._getData().toInt(),
                 Matchers.equalTo(2L)
         );
+    }
+
+    @Test
+    void EOtoEOfloat() {
+        final EOint left = new EOint(2L);
+        final EOfloat floatValue = left.EOtoEOfloat();
+
+        MatcherAssert.assertThat(floatValue._getData().toFloat(), Matchers.equalTo(2.0));
     }
 }

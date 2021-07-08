@@ -5,7 +5,6 @@ import com.google.googlejavaformat.java.FormatterException;
 import org.ainslec.picocog.PicoWriter;
 import org.eolang.EOarray;
 import org.eolang.core.EOObject;
-import org.eolang.core.EOObjectArray;
 import transpiler.medium2target.TranslationCommons;
 
 import java.util.ArrayList;
@@ -255,7 +254,7 @@ public class EOAbstraction extends EOSourceEntity {
                 EOInputAttribute attr = freeAttributes.get(i);
                 String wrapper;
                 if (attr.isVararg()) {
-                    wrapper = String.format("new %s(new %s(%s))", EOarray.class.getSimpleName(), EOObjectArray.class.getSimpleName(), attr.getTargetName());
+                    wrapper = String.format("new %s(new %s(%s))", EOarray.class.getSimpleName(), EOarray.class.getSimpleName(), attr.getTargetName());
                 } else {
                     wrapper = attr.getTargetName();
                 }

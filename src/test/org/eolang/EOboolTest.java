@@ -79,12 +79,4 @@ class EOboolTest {
                 Matchers.equalTo(true)
         );
     }
-
-    /***
-     * Test for {@code EOwhile}
-     * TO DO
-     */
-    @Test
-    void EOwhile() {
-    }
 }
